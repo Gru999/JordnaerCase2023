@@ -1,7 +1,6 @@
-﻿namespace JordnærCase2023.Interfaces
-{
-    public interface IEventService
-    {
-
+﻿using JordnærCase2023.Models;
+namespace JordnærCase2023.Interfaces {
+    public interface IEventService {
+        
     }
 }
