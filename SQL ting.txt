@@ -1,0 +1,1 @@
+insert into JShift (ShiftType_ID, Date_From, Date_To) Values (1, '2023-01-01', '2023-01-02');
