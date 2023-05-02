@@ -13,11 +13,13 @@
 
         }
 
-        public Shift(int shiftID, int memberID, int shiftType)
+        public Shift(int shiftID, int memberID, int shiftType, DateTime dateFrom, DateTime dateTo)
         {
             ShiftID = shiftID;
             MemberID = memberID;
             ShiftType = shiftType;
+            DateFrom = dateFrom;
+            DateTo = dateTo;
         }
 
         public override string ToString()

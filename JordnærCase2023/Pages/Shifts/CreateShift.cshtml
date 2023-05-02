@@ -1,15 +1,18 @@
 ﻿@page
-@model JordnærCase2023.Pages.Shift.CreateModel
+@model JordnærCase2023.Pages.Shifts.CreateModel
 @{
     ViewData["Title"] = "Create Shift";
 }
 
 <h1>Create Shift</h1>
 
-@*<div class="row">
+<div class="row">
     <div class="col-md-4">
         <form method="post">
-            <label asp-for="@Model.Shift"
+            <div class="form-group">
+                <label asp-for="@Model." class="control-label"></label>
+                <input asp-for="@Model" class="form-control" />
+            </div>
         </form>
     </div>
-</div>*@
+</div>
