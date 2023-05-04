@@ -10,10 +10,6 @@
     <div class="col-md-4">
         <form method="post">
             <div class="form-group">
-                <label asp-for="@Model.ShiftCreate.ShiftID" class="control-label"></label>
-                <input asp-for="@Model.ShiftCreate.ShiftID" class="form-control" />
-            </div>
-            <div class="form-group">
                 <label asp-for="@Model.ShiftCreate.MemberID" class="control-label"></label>
                 <input asp-for="@Model.ShiftCreate.MemberID" class="form-control" />
             </div>
@@ -21,6 +17,15 @@
                 <label asp-for="@Model.ShiftCreate.ShiftType" class="control-label"></label>
                 <input asp-for="@Model.ShiftCreate.ShiftType" class="form-control" />
             </div>
+            <div class="form-group">
+                <label asp-for="@Model.ShiftCreate.DateFrom" class="control-label"></label>
+                <input asp-for="@Model.ShiftCreate.DateFrom" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ShiftCreate.DateTo" class="control-label"></label>
+                <input asp-for="@Model.ShiftCreate.DateTo" class="form-control" />
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
