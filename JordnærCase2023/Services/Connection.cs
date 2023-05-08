@@ -8,8 +8,8 @@ namespace JordnærCase2023.Services
         public IConfiguration Configuration { get; set; }
         public Connection(IConfiguration configuration)
         {
-            connectionString = Secret.MyProperty;
             Configuration = configuration;
+            connectionString = Configuration["ConnectionStrings:DefaultConnection"];
         }
         public Connection(string connectionString)
         {
