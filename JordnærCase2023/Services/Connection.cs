@@ -17,6 +17,4 @@ namespace JordnærCase2023.Services
             this.connectionString = connectionString;
         }
     }
-
-    }
 }

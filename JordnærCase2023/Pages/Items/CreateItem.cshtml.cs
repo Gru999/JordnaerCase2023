@@ -4,7 +4,6 @@ using JordnærCase2023.Interfaces;
 using JordnærCase2023.Models;
 using Microsoft.AspNetCore;
 using Microsoft.Extensions.Logging;
-using Azure;
 
 
 namespace JordnærCase2023.Pages.Items
