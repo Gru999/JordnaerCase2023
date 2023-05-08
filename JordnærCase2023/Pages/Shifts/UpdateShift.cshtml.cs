@@ -18,5 +18,9 @@ namespace JordnærCase2023.Pages.Shifts
         {
 
         }
+        public void OnPost()
+        {
+
+        }
     }
 }
