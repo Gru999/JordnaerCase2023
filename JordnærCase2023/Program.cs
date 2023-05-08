@@ -1,5 +1,5 @@
-using JordnærCase2023.Interfaces;
-using JordnærCase2023.Services;
+ï»¿using JordnÃ¦rCase2023.Interfaces;
+using JordnÃ¦rCase2023.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +12,13 @@ builder.Services.AddTransient<IShiftService, ShiftService>();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
+
+builder.Services.AddTransient<IItemService, ItemService>();
 var app = builder.Build();
+
+
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
