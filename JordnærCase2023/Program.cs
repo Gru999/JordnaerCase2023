@@ -1,24 +1,14 @@
-﻿using JordnærCase2023.Interfaces;
-using JordnærCase2023.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddTransient<IEventService, EventService>();
-builder.Services.AddTransient<IShiftService, ShiftService>();
+//builder.Services.AddTransient<IEventService, EventService>();
 
 // For user login
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
-
-builder.Services.AddTransient<IItemService, ItemService>();
 var app = builder.Build();
-
-
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
