@@ -1,4 +1,4 @@
-﻿using JordnaerMedlemmer.Models;
+﻿using JordnærCase2023.Models;
 
 namespace JordnærCase2023.Models
 {
