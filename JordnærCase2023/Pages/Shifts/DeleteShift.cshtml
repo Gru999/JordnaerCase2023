@@ -11,10 +11,23 @@
         <form method="post">
             <div class="form-group">
                 <label asp-for="@Model.ShiftDelete.ShiftID" class="control-label"></label>
-                <input asp-for="@Model.ShiftDelete.ShiftID" class="form-control" />
+                <input asp-for="@Model.ShiftDelete.ShiftID" class="form-control" readonly />
             </div>
             <div class="form-group">
-                <input type="submit" value="Delete" class="btn btn-primary" />
+                <label asp-for="@Model.ShiftDelete.ShiftType" class="control-label"></label>
+                <input asp-for="@Model.ShiftDelete.ShiftType" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ShiftDelete.DateFrom" class="control-label"></label>
+                <input asp-for="@Model.ShiftDelete.DateFrom" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ShiftDelete.DateTo" class="control-label"></label>
+                <input asp-for="@Model.ShiftDelete.DateTo" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn btn-primary" /> 
+                <button type="button" class="btn btn-primary" onclick="window.history.back();">Cancel</button>
             </div>
         </form>
     </div>

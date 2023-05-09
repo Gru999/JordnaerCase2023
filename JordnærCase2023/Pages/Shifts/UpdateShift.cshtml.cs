@@ -7,6 +7,7 @@ namespace JordnærCase2023.Pages.Shifts
 {
     public class UpdateModel : PageModel
     {
+        [BindProperty]
         public Shift ShiftUpdate { get; set; }
         public IShiftService _shiftService { get; set; }
         public UpdateModel(IShiftService shiftService)
@@ -14,13 +15,14 @@ namespace JordnærCase2023.Pages.Shifts
             _shiftService = shiftService;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync(int shiftId)
         {
-
+            ShiftUpdate = await _shiftService.GetShiftsByIdAsync(shiftId);
         }
-        public async Task OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
             await _shiftService.UpdateShiftAsync(ShiftUpdate);
+            return RedirectToPage("GetAllShifts");
         }
     }
 }

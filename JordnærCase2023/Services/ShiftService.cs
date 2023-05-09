@@ -25,8 +25,7 @@ namespace JordnærCase2023.Services
 
         }
 
-        // Async CRUD - ShiftCRUD -- Value Parametre mangler -- AllShift, ShiftById mangler yderligere info.
-        // Mangler referencer til Foreign Keys (FK) når VagtTyper er merged.
+        // Mangler referencer til Foreign Keys (FK) når VagtTyper er oprettet.
         public async Task<bool> CreateShiftAsync(Shift shift)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
