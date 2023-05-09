@@ -9,7 +9,7 @@ namespace JordnærCase2023.Services
     {
 
         private string queryString = "select * from Member";
-        private string insertSql = "insert into Member Values (@ID, @Name, @Image, @Phone, @Email, @Password, @SanitationCourse, @Admin)";
+        private string insertSql = "insert into Member Values (@Name, @Image, @Phone, @Email, @Password, @SanitationCourse, @Admin)";
         private string updateSql = "update Member" + "set Member_ID = @ID, Member_Name = @Name, Member_Img = @Image, Member_Phone = @Phone, Member_Email = @Email, Member_Password = @Password, Member_SanitationCourse = @SanitationCourse, Member_Admin = @Admin" + "where Member_ID = @ID";
         private string deleteSql = "delete from Member where Member_ID = @ID";
         private string queryStringFromName = "select * from Member where Member_Name like @Name";
@@ -26,8 +26,6 @@ namespace JordnærCase2023.Services
 
         public async Task<List<Member>> GetAllMembersAsync()
         {
-            throw new NotImplementedException();
-
             List<Member> members = new List<Member>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -56,10 +54,11 @@ namespace JordnærCase2023.Services
                             {
                                 member = new Member(memberID, memberName, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
                             }
-                            if (memberImg != null)
+                            else
                             {
                                 member = new Member(memberID, memberName, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
                             }
+                            members.Add(member);
                         }
                     }
                     catch (SqlException sqlEx)
@@ -83,9 +82,15 @@ namespace JordnærCase2023.Services
             {
                 using (SqlCommand command = new SqlCommand(insertSql, connection))
                 {
-                    command.Parameters.AddWithValue("@ID", member.Id);
                     command.Parameters.AddWithValue("@Name", member.Name);
-                    command.Parameters.AddWithValue("@Image", member.Image);
+                    if(member.Image != null)
+                    {
+                        command.Parameters.AddWithValue("@Image", member.Image);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@Image", DBNull.Value);
+                    }
                     command.Parameters.AddWithValue("@Phone", member.Phone);
                     command.Parameters.AddWithValue("@Email", member.Email);
                     command.Parameters.AddWithValue("@Password", member.Password);
@@ -94,7 +99,7 @@ namespace JordnærCase2023.Services
                     try
                     {
                         command.Connection.Open();
-                        int noOfRows = await command.ExecuteNonQueryAsync(); //bruges ved update, delete, insert
+                        int noOfRows = await command.ExecuteNonQueryAsync();
                         if (noOfRows == 1)
                         {
                             return true;
@@ -199,13 +204,25 @@ namespace JordnærCase2023.Services
                     {
                         int memberID = reader.GetInt32(0);
                         string name = reader.GetString(1);
-                        string memberImg = reader.GetString(2);
+                        string? memberImg = null;
+                        if (!reader.IsDBNull(2))
+                        {
+                            memberImg = reader.GetString(2);
+                        }
                         int memberPhone = reader.GetInt32(3);
                         string memberEmail = reader.GetString(4);
                         string memberPassword = reader.GetString(5);
                         bool memberSanitationCourse = reader.GetBoolean(6);
                         bool memberAdmin = reader.GetBoolean(7);
-                        Member member = new Member(memberID, name, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
+                        Member member;
+                        if (memberImg == null)
+                        {
+                            member = new Member(memberID, name, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
+                        }
+                        else
+                        {
+                            member = new Member(memberID, name, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
+                        }
                         members.Add(member);
                     }
                 }
