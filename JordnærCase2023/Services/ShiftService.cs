@@ -107,7 +107,6 @@ namespace JordnærCase2023.Services
         }
 
         public async Task<List<Shift>> GetAllShiftsAsync()
-        
         {
             List<Shift> shifts = new List<Shift>();
             using (SqlConnection connection = new SqlConnection(connectionString))

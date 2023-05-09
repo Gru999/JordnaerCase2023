@@ -11,26 +11,26 @@
     <input type="submit" value="Filter" />
 </form> 
 <p>
-    <a asp-page="Create">Create a new Shift</a>
+    <a asp-page="CreateShift">Create a new Shift</a>
 </p>
 
 <table class="table">
     <thead>
-        <tr>
+        <th>
             Shift_ID
-        </tr>
-        <tr>
+        </th>
+        <th>
             Member_ID
-        </tr>
-        <tr>
+        </th>
+        <th>
             Shift_Type
-        </tr>
-        <tr>
+        </th>
+        <th>
             Date_From
-        </tr>
-        <tr>
+        </th>
+        <th>
             Date_To
-        </tr>
+        </th>
     </thead>
     <tbody>
         @if (Model.Shifts.Count() != 0)
@@ -41,12 +41,23 @@
                     <td>
                         @item.ShiftID
                     </td>
+                    <td>
+                        @item.MemberID
+                    </td>
+                    <td>
+                        @item.ShiftType
+                    </td>
+                    <td>
+                        @item.DateFrom
+                    </td>
+                    <td>
+                        @item.DateTo
+                    </td>
+                    <td>
+                        <a asp-page="DeleteShift" asp-route-shiftId="@item.ShiftID">Delete</a>
+                    </td>
                 </tr>
             }
         }
     </tbody>
-
-
-
-
 </table>

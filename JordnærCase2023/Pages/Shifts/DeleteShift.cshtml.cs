@@ -1,7 +1,7 @@
-using JordnærCase2023.Interfaces;
-using JordnærCase2023.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using JordnærCase2023.Models;
+using JordnærCase2023.Interfaces;
 
 namespace JordnærCase2023.Pages.Shifts
 {
@@ -15,14 +15,14 @@ namespace JordnærCase2023.Pages.Shifts
             _shiftService = shiftService;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync(int shiftId)
         {
-
+            ShiftDelete = await _shiftService.GetShiftsByIdAsync(shiftId);
         }
-        public void OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            _shiftService.DeleteShiftAsync(ShiftDelete.ShiftID);
+            await _shiftService.DeleteShiftAsync(ShiftDelete.ShiftID);
+            return RedirectToPage("GetAllShifts");
         }
-
     }
 }

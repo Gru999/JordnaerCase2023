@@ -19,7 +19,7 @@ namespace JordnærCase2023.Pages.Shifts
 
         public async Task OnGetAsync()
         {
-            //if ( !FilterCriteria == null)
+            //if (!FilterCriteria == null)
             //{
             //    Shifts = await _shiftService.GetShiftsByIdAsync(FilterCriteria);
             //}
