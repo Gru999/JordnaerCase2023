@@ -1,0 +1,64 @@
+﻿@page
+@model JordnærCase2023.Pages.Shifts.GetAllShiftsModel
+@{
+    ViewData["Title"] = "Get All Shifts";
+}
+
+<h1>Get All Shifts</h1>
+
+<form method="get">
+    Search <input type="text" asp-for="@Model.FilterCriteria" />
+    <input type="submit" value="Filter" />
+</form> 
+<p>
+    <a asp-page="CreateShift">Create a new Shift</a>
+</p>
+
+<table class="table">
+    <thead>
+        <th>
+            Shift_ID
+        </th>
+        <th>
+            Member_ID
+        </th>
+        <th>
+            Shift_Type
+        </th>
+        <th>
+            Date_From
+        </th>
+        <th>
+            Date_To
+        </th>
+    </thead>
+    <tbody>
+        @if (Model.Shifts.Count() != 0)
+        {
+            @foreach (var item in Model.Shifts)
+            {
+                <tr>
+                    <td>
+                        @item.ShiftID
+                    </td>
+                    <td>
+                        @item.MemberID
+                    </td>
+                    <td>
+                        @item.ShiftType
+                    </td>
+                    <td>
+                        @item.DateFrom
+                    </td>
+                    <td>
+                        @item.DateTo
+                    </td>
+                    <td>
+                        <a asp-page="UpdateShift" asp-route-shiftId="@item.ShiftID">Update</a> |
+                        <a asp-page="DeleteShift" asp-route-shiftId="@item.ShiftID">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

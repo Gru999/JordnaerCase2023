@@ -1,0 +1,42 @@
+﻿@page
+@model JordnærCase2023.Pages.Members.AllMembersModel
+@{
+    ViewData["Title"] = "Medlemmer";
+}
+
+<h1>Medlemmer</h1>
+
+<a asp-page="CreateMember">Opret nyt medlem</a>
+
+<form method="get">
+    <input type="text" asp-for="@Model.FilterCriteria" placeholder="Søg efter navn..."/>
+    <input type="submit" value="Filter" />
+</form>
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th>ID</th>
+        <th>Navn</th>
+        <th>Tlf.</th>
+        <th>E-mail</th>
+        <th></th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.Members)
+    {
+        <tr>
+            <td></td>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.Phone</td>
+            <td>@item.Email</td>
+            <td>
+                <a asp-page="UpdateMember" asp-route-memberId="@item.Id">Rediger</a>
+            </td>
+            <td>
+                <a asp-page="DeleteMember" asp-route-memberId="@item.Id">Slet</a>
+            </td>
+        </tr>
+    }
+</table>
