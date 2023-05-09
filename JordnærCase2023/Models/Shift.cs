@@ -1,6 +1,4 @@
-﻿using JordnaerMedlemmer.Models;
-
-namespace JordnærCase2023.Models
+﻿namespace JordnærCase2023.Models
 {
     public class Shift
     {

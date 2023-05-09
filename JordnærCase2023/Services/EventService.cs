@@ -1,7 +1,6 @@
 ﻿using JordnærCase2023.Interfaces;
 using JordnærCase2023.Models;
 using Microsoft.Extensions.Logging;
-//using Microsoft.Data.SqlClient;
 using System.Data.SqlClient;
 
 namespace JordnærCase2023.Services
@@ -18,6 +17,12 @@ namespace JordnærCase2023.Services
         public EventService(IConfiguration configuration) : base(configuration)
         {
         }
+
+        public EventService(string connectionString) :base(connectionString)
+        {
+            
+        }
+
 
         public Task<bool> CreateEventAsync(Event @event)
         {
@@ -43,11 +48,19 @@ namespace JordnærCase2023.Services
                         while (await reader.ReadAsync())
                         {
                             int eventId = reader.GetInt32(0);
-                            String eventName = reader.GetString(1);
-                            String eventDescription = reader.GetString(2);
+                            string eventName = reader.GetString(1);
+                            string? eventDescription = null ;
+                            if (!reader.IsDBNull(2))
+                            {
+                                eventDescription = reader.GetString(2);
+                            }
                             DateTime dateFrom = reader.GetDateTime(3);
                             DateTime dateTo = reader.GetDateTime(4);
-                            string eventImg = reader.GetString(5);
+                            string? eventImg = null;
+                            if(!reader.IsDBNull(5))
+                            {
+                                eventImg = reader.GetString(5);
+                            }
                             int maxEventMembers = reader.GetInt32(6);
 
                             Event @event = new Event(eventId, eventName, eventDescription, dateFrom, dateTo, eventImg, maxEventMembers);

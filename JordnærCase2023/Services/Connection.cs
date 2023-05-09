@@ -9,7 +9,7 @@ namespace JordnærCase2023.Services
         public Connection(IConfiguration configuration)
         {
             Configuration = configuration;
-            connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+            connectionString = Secret.MyConnectionString; /*Configuration["ConnectionStrings:DefaultConnection"];*/
         }
         public Connection(string connectionString)
         {
