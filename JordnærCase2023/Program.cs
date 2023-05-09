@@ -8,6 +8,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddTransient<IEventService, EventService>();
 builder.Services.AddTransient<IShiftService, ShiftService>();
 builder.Services.AddTransient<IItemService, ItemService>();
+builder.Services.AddTransient<IMemberService, MemberService>();
 
 // For user login
 builder.Services.AddSession();
