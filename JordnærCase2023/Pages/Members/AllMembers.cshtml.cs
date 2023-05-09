@@ -9,13 +9,22 @@ namespace JordnærCase2023.Pages.Members
     {
         public List<Member> Members { get; set; }
         private IMemberService mService;
+        [BindProperty(SupportsGet = true)]
+        public string FilterCriteria { get; set; }
         public AllMembersModel(IMemberService memberService)
         {
             mService = memberService;
         }
         public async Task OnGetAsync()
         {
-            Members = await mService.GetAllMembersAsync();
+            if(FilterCriteria != null)
+            {
+                Members = await mService.GetMembersByName(FilterCriteria);
+            }
+            else
+            {
+                Members = await mService.GetAllMembersAsync();
+            }
         }
     }
 }
