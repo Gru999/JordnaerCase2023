@@ -1,9 +1,7 @@
-using JordnærCase2023.Interfaces;
-using JordnærCase2023.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace JordnærCase2023.Pages.Shifts
+namespace JordnærCase2023.Pages.Shift
 {
     public class DeleteModel : PageModel
     {
@@ -24,6 +22,5 @@ namespace JordnærCase2023.Pages.Shifts
             await _shiftService.DeleteShiftAsync(ShiftDelete.ShiftID);
             return RedirectToPage("GetAllShifts");
         }
-
     }
 }
