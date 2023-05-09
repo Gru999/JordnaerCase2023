@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace JordnærCase2023.Pages.Event
+namespace JordnærCase2023.Pages.Items
 {
-    public class CreateEventModel : PageModel
+    public class ShowIndividualModel : PageModel
     {
         public void OnGet()
         {
