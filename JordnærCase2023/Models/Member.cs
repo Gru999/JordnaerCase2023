@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Image { get; set; }
+        public string? Image { get; set; }
         public int Phone { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
@@ -16,7 +16,18 @@
 
         }
 
-        public Member(int id, string name, string image, int phone, string email, string password, bool sanitationcourse, bool admin)
+        public Member(int id, string name, int phone, string email, string password, bool sanitationcourse, bool admin)
+        {
+            Id = id;
+            Name = name;
+            Phone = phone;
+            Email = email;
+            Password = password;
+            SanitationCourse = sanitationcourse;
+            Admin = admin;
+        }
+
+        public Member(int id, string name, string? image, int phone, string email, string password, bool sanitationcourse, bool admin)
         {
             Id = id;
             Name = name;

@@ -19,57 +19,62 @@ namespace JordnærCase2023.Services
         
         }
 
+        public MemberService(string connectionString) : base(connectionString)
+        {
+
+        }
+
         public async Task<List<Member>> GetAllMembersAsync()
         {
             throw new NotImplementedException();
 
-        //    List<Member> members = new List<Member>();
-        //    using (SqlConnection connection = new SqlConnection(connectionString))
-        //    {
-        //        using (SqlCommand command = new SqlCommand(queryString, connection))
-        //        {
-        //            try
-        //            {
-        //                await command.Connection.OpenAsync();
-        //                SqlDataReader reader = await command.ExecuteReaderAsync();
-        //                while (await reader.ReadAsync())
-        //                {
-        //                    int memberID = reader.GetInt32(0);
-        //                    string memberName = reader.GetString(1);
-        //                    string? memberImg = null;
-        //                    if (!reader.IsDBNull(2))
-        //                    {
-        //                        memberImg = reader.GetString(2);
-        //                    }
-        //                    int memberPhone = reader.GetInt32(3);
-        //                    string memberEmail = reader.GetString(4);
-        //                    string memberPassword = reader.GetString(5);
-        //                    bool memberSanitationCourse = reader.GetBoolean(6);
-        //                    bool memberAdmin = reader.GetBoolean(7);
-        //                    Member member;
-        //                    if(memberImg == null)
-        //                    {
-        //                        member = new Member(memberID, memberName, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
-        //                    }
-        //                    if (memberImg != null)
-        //                    {
-        //                        member = new Member(memberID, memberName, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
-        //                    }
-        //                }
-        //            }
-        //            catch (SqlException sqlEx)
-        //            {
-        //                Console.WriteLine("Database error " + sqlEx.Message);
-        //                return null;
-        //            }
-        //            catch (Exception exp)
-        //            {
-        //                Console.WriteLine("Generel fejl" + exp.Message);
-        //                return null;
-        //            }
-        //        }
-        //    }
-        //    return members;
+            List<Member> members = new List<Member>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(queryString, connection))
+                {
+                    try
+                    {
+                        await command.Connection.OpenAsync();
+                        SqlDataReader reader = await command.ExecuteReaderAsync();
+                        while (await reader.ReadAsync())
+                        {
+                            int memberID = reader.GetInt32(0);
+                            string memberName = reader.GetString(1);
+                            string? memberImg = null;
+                            if (!reader.IsDBNull(2))
+                            {
+                                memberImg = reader.GetString(2);
+                            }
+                            int memberPhone = reader.GetInt32(3);
+                            string memberEmail = reader.GetString(4);
+                            string memberPassword = reader.GetString(5);
+                            bool memberSanitationCourse = reader.GetBoolean(6);
+                            bool memberAdmin = reader.GetBoolean(7);
+                            Member member;
+                            if (memberImg == null)
+                            {
+                                member = new Member(memberID, memberName, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
+                            }
+                            if (memberImg != null)
+                            {
+                                member = new Member(memberID, memberName, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
+                            }
+                        }
+                    }
+                    catch (SqlException sqlEx)
+                    {
+                        Console.WriteLine("Database error " + sqlEx.Message);
+                        return null;
+                    }
+                    catch (Exception exp)
+                    {
+                        Console.WriteLine("Generel fejl" + exp.Message);
+                        return null;
+                    }
+                }
+            }
+            return members;
         }
 
         public async Task<bool> CreateMemberAsync(Member member)
