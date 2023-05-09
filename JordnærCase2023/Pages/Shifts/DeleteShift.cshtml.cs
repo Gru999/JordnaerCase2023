@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using JordnærCase2023.Models;
 
 namespace JordnærCase2023.Pages.Shift
 {
