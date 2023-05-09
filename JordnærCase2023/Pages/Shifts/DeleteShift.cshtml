@@ -1,6 +1,7 @@
 ﻿@page
-@model JordnærCase2023.Pages.Shift.DeleteModel
+@model JordnærCase2023.Pages.Shifts.DeleteModel
 @{
+    ViewData["Title"] = "Delete Shift";
 }
 
 <h1>Delete Shift</h1>
@@ -12,7 +13,6 @@
                 <label asp-for="@Model.ShiftDelete.ShiftID" class="control-label"></label>
                 <input asp-for="@Model.ShiftDelete.ShiftID" class="form-control" />
             </div>
-            @*Routes from Listen*@
             <div class="form-group">
                 <input type="submit" value="Delete" class="btn btn-primary" />
             </div>

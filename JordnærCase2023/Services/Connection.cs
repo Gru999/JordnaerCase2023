@@ -2,7 +2,7 @@
 
 namespace JordnærCase2023.Services
 {
-    public class Connection
+    public abstract class Connection
     {
         protected string connectionString;
         public IConfiguration Configuration { get; set; }
@@ -17,5 +17,4 @@ namespace JordnærCase2023.Services
             this.connectionString = connectionString;
         }
     }
-
 }
