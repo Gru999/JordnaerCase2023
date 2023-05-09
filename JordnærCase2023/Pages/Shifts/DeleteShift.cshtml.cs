@@ -15,13 +15,14 @@ namespace JordnærCase2023.Pages.Shifts
             _shiftService = shiftService;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync(int shiftId)
         {
-
+            ShiftDelete = await _shiftService.GetShiftsByIdAsync(shiftId);
         }
-        public async Task OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
             await _shiftService.DeleteShiftAsync(ShiftDelete.ShiftID);
+            return RedirectToPage("GetAllShifts");
         }
 
     }

@@ -18,9 +18,9 @@ namespace JordnærCase2023.Pages.Shifts
         {
 
         }
-        public void OnPost()
+        public async Task OnPostAsync()
         {
-
+            await _shiftService.UpdateShiftAsync(ShiftUpdate);
         }
     }
 }

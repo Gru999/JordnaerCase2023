@@ -19,9 +19,10 @@ namespace JordnærCase2023.Pages.Shifts
         {
 
         }
-        public async Task OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
             await _shiftService.CreateShiftAsync(ShiftCreate);
+            return RedirectToPage("GetAllShifts");
         }
     }
 }
