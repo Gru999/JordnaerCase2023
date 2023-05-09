@@ -1,8 +1,68 @@
 ﻿@page
 @model JordnærCase2023.Pages.Events.GetAllEventsModel
 @{
+    ViewData["Titel"] = "GetAllEvents";
 }
 
+<h1>Current Events</h1>
+
+<form method="get">
+    Search <input type="text" asp-for="FilterCriteria" />
+    <input type="submit" value="Filter" />
+</form>
+<p></p>
+
 <p>
-    @Model.Events.Count
+    <a asp-page="CreateEvent">Create Event</a>
 </p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Event Id
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Events.Count() != 0)
+        {
+            @foreach (var item in Model.Events)
+            {
+                <tr>
+                    <td>
+                        @item.EventId
+                    </td>
+                    <td>
+                        @item.EventName
+                    </td>
+                    <td>
+                        @item.EventDescription
+                    </td>
+                    <td>
+                        @item.EventDateFrom
+                    </td>
+                    <td>
+                        @item.EventDateTo
+                    </td>
+                    <td>
+                        @item.EventImg
+                    </td>
+                    <td>
+                        @item.EventMaxAttendance
+                    </td>
+                    <td>
+                        <a asp-page="UpdateEvent" asp-route-id="@item.EventId">Update</a> |
+                        <a asp-page="DeleteEvent" asp-route-id="@item.EventId">Delete</a> |
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

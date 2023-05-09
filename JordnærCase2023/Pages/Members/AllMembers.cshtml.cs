@@ -3,7 +3,7 @@ using JordnærCase2023.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace JordnaerMedlemmer.Pages.Members
+namespace JordnærCase2023.Pages.Members
 {
     public class AllMembersModel : PageModel
     {
