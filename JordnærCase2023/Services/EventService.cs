@@ -7,8 +7,8 @@ namespace JordnærCase2023.Services
 {
     public class EventService : Connection, IEventService
     {
-        private string queryCreate = "insert into JEvent (Event_ID, Event_Name, Event_Description, Date_From, Date_To, Event_Img, Max_EventMembers)" +
-                                     "values (@EventID, @EventName, @EventDescription, @DateFrom, @DateTo, @EventImg, @MaxEventMembers)";
+        private string queryCreate = "insert into JEvent (Event_Name, Event_Description, Date_From, Date_To, Event_Img, Max_EventMembers)" +
+                                     "values (@EventName, @EventDescription, @DateFrom, @DateTo, @EventImg, @MaxEventMembers)";
         private string queryDelete = "delete from JEvent where Event_ID = @EventID";
         private string queryUpdate = "update JEvent set Event_ID = @EventID, Event_Name = @EventName, Event_Description = @EventDescription, Date_From = @DateFrom, Date_To = @DateTo, Event_Img = @EventImg, Max_EventMembers = @MaxEventMembers where Event_ID = @EventID";
         private string queryEventFromId = "select * from JEvent where Event_ID = @EventID";
@@ -20,28 +20,35 @@ namespace JordnærCase2023.Services
         }
 
         public EventService(string connectionString) :base(connectionString)
-        {
-            
+        {   
         }
 
 
-        public async Task<bool> CreateEventAsync(Event @event)
+        public async Task<bool> CreateEventAsync(Event _event)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     SqlCommand command = new SqlCommand(queryCreate, connection);
-                    command.Parameters.AddWithValue("@EventID", @event.EventId);
-                    command.Parameters.AddWithValue("@EventName", @event.EventName);
-                    command.Parameters.AddWithValue("@EventDescription", @event.EventDescription);
-                    command.Parameters.AddWithValue("@DateFrom", @event.EventDateFrom);
-                    command.Parameters.AddWithValue("@DateTo", @event.EventDateTo);
-                    command.Parameters.AddWithValue("@EventImg", @event.EventImg);
-                    command.Parameters.AddWithValue("@MaxEventMemebers", @event.EventMaxAttendance);
+                    //command.Parameters.AddWithValue("@EventID", _event.EventId);
+                    command.Parameters.AddWithValue("@EventName", _event.EventName);
+                    if (_event.EventDescription == null) {
+                        command.Parameters.AddWithValue("@EventDescription", DBNull.Value);
+                    } else {
+                        command.Parameters.AddWithValue("@EventDescription", _event.EventDescription);
+                    }
+                    command.Parameters.AddWithValue("@DateFrom", _event.EventDateFrom);
+                    command.Parameters.AddWithValue("@DateTo", _event.EventDateTo);
+                    if (_event.EventImg == null) {
+                        command.Parameters.AddWithValue("@EventImg", DBNull.Value);
+                    } else {
+                        command.Parameters.AddWithValue("@EventImg", _event.EventImg);
+                    }
+                    command.Parameters.AddWithValue("@MaxEventMembers", _event.EventMaxAttendance);
                     await command.Connection.OpenAsync();
-                    int result = await command.ExecuteNonQueryAsync();
-                    return result == 1;
+                    int resultCreate = await command.ExecuteNonQueryAsync();
+                    return resultCreate == 1;
                 }
                 catch (SqlException sqlEx)
                 {
@@ -111,8 +118,8 @@ namespace JordnærCase2023.Services
                             }
                             int maxEventMembers = reader.GetInt32(6);
 
-                            Event @event = new Event(eventId, eventName, eventDescription, dateFrom, dateTo, eventImg, maxEventMembers);
-                            events.Add(@event);
+                            Event _event = new Event(eventId, eventName, eventDescription, dateFrom, dateTo, eventImg, maxEventMembers);
+                            events.Add(_event);
                         }
                     }
                     catch (SqlException sqlEx)
@@ -204,8 +211,8 @@ namespace JordnærCase2023.Services
                         }
                         int maxEventMembers = reader.GetInt32(6);
 
-                        Event @event = new Event(eventId, eventName, eventDescription, dateFrom, dateTo, eventImg, maxEventMembers);
-                        events.Add(@event);
+                        Event _event = new Event(eventId, eventName, eventDescription, dateFrom, dateTo, eventImg, maxEventMembers);
+                        events.Add(_event);
                     }
                 }
                 catch (SqlException sqlEx)
@@ -221,23 +228,37 @@ namespace JordnærCase2023.Services
             return null;
         }
 
-        public async Task<bool> UpdateEventAsync(Event @event, int eventId)
+        public async Task<bool> UpdateEventAsync(Event _event, int eventId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     SqlCommand command = new SqlCommand(queryUpdate, connection);
-                    command.Parameters.AddWithValue("@EventID", @event.EventId);
-                    command.Parameters.AddWithValue("@EventName", @event.EventName);
-                    command.Parameters.AddWithValue("@EventDescription", @event.EventDescription);
-                    command.Parameters.AddWithValue("@DateFrom", @event.EventDateFrom);
-                    command.Parameters.AddWithValue("@DateTo", @event.EventDateTo);
-                    command.Parameters.AddWithValue("@EventImg", @event.EventImg);
-                    command.Parameters.AddWithValue("@MaxEventMemebers", @event.EventMaxAttendance);
+                    command.Parameters.AddWithValue("@EventID", _event.EventId);
+                    command.Parameters.AddWithValue("@EventName", _event.EventName);
+                    if (_event.EventDescription == null)
+                    {
+                        command.Parameters.AddWithValue("@EventDescription", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@EventDescription", _event.EventDescription);
+                    }
+                    command.Parameters.AddWithValue("@DateFrom", _event.EventDateFrom);
+                    command.Parameters.AddWithValue("@DateTo", _event.EventDateTo);
+                    if (_event.EventImg == null)
+                    {
+                        command.Parameters.AddWithValue("@EventImg", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@EventImg", _event.EventImg);
+                    }
+                    command.Parameters.AddWithValue("@MaxEventMemebers", _event.EventMaxAttendance);
                     await command.Connection.OpenAsync();
-                    int updated = await command.ExecuteNonQueryAsync();
-                    return updated == 1;
+                    int resultUpdate = await command.ExecuteNonQueryAsync();
+                    return resultUpdate == 1;
                 }
                 catch (SqlException sqlEx)
                 {

@@ -1,4 +1,53 @@
 ﻿@page
 @model JordnærCase2023.Pages.Events.DeleteEventModel
 @{
+    ViewData["Title"] = "Delte Event";
 }
+
+<h1>Delete Event</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.Event.EventId" />*@
+            <div class="form-group">
+                <label asp-for="@Model.Event.EventId" class="control-label"></label>
+                <input asp-for="@Model.Event.EventId" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Event.EventName" class="control-label"></label>
+                <input asp-for="@Model.Event.EventName" class="form-control" readonly/>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Event.EventDescription" class="control-label"></label>
+                <input asp-for="@Model.Event.EventDescription" class="form-control" readonly/>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Event.EventDateFrom" class="control-label"></label>
+                <input asp-for="@Model.Event.EventDateFrom" class="form-control" readonly/>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Event.EventDateTo" class="control-label"></label>
+                <input asp-for="@Model.Event.EventDateTo" class="form-control" readonly/>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Event.EventImg" class="control-label"></label>
+                <input asp-for="@Model.Event.EventImg" class="form-control" readonly/>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Event.EventMaxAttendance" class="control-label"></label>
+                <input asp-for="@Model.Event.EventMaxAttendance" class="form-control" readonly/>
+            </div>
+
+            <div class="formgroup">
+                <input type="submit" value="Delete" class="btn btn-primary" />
+            </div>
+            <p></p>
+        </form>
+    </div>
+    <div>
+        <a asp-page="GetAllEvents">Cancel</a>
+    </div>
+</div>
+

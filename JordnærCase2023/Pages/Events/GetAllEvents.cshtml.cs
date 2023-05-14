@@ -11,13 +11,21 @@ namespace JordnærCase2023.Pages.Events
         [BindProperty(SupportsGet = true)]
         public string FilterCriteria { get; set; }
         public List<Event> Events { get; set; }
+        //public string UserName { get; set; }
         public GetAllEventsModel(IEventService eventService)
         {
             _eventService = eventService;
         }
         public async Task OnGetAsync()
         {
+            //UserName = HttpContext.Session.GetString("UserName");
+            //if(UserName == null)
+            //{
+            //    return RedirectToPage("/Login");
+            //}
+
             Events = await _eventService.GetAllEventsAsync();
+
         }
     }
 }

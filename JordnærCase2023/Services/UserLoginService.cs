@@ -5,22 +5,26 @@ namespace JordnærCase2023.Services
 {
     public class UserLoginService : IUserLoginService
     {
-        public List<Member> GetAllUsers()
+        private IMemberService _memberService;
+        public UserLoginService(IMemberService memberService)
         {
-            throw new NotImplementedException();
+            _memberService = memberService;
+        }
+        public async Task<List<Member>> GetAllUsers()
+        {
+            return await _memberService.GetAllMembersAsync();
         }
 
         public Member VerifyUser(string username, string password)
         {
-            foreach (var member in GetAllUsers())
+            foreach (var member in GetAllUsers().Result)
             {
-                if (username.Equals(member.Name) && password.Equals(member.Password))
+                if (username.Equals(member.Email) && password.Equals(member.Password))
                 {
                     return member;
                 }
             }
             return null;
         }
-
     }
 }

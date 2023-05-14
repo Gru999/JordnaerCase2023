@@ -20,6 +20,15 @@
             EventImg = eventImg;
             EventMaxAttendance = eventMaxAttendance;            
         }
+        public Event(int eventId, string eventName, string? eventDescription, DateTime eventDateFrom, DateTime eventDateTo, int eventMaxAttendance)
+        {
+            EventId = eventId;
+            EventName = eventName;
+            EventDescription = eventDescription;
+            EventDateFrom = eventDateFrom;
+            EventDateTo = eventDateTo;
+            EventMaxAttendance = eventMaxAttendance;
+        }
 
         public Event(int eventId, string eventName, DateTime eventDateFrom, DateTime eventDateTo, string? eventImg, int eventMaxAttendance)
         {
@@ -31,15 +40,6 @@
             EventMaxAttendance = eventMaxAttendance;
         }
 
-        public Event(int eventId, string eventName, string? eventDescription, DateTime eventDateFrom, DateTime eventDateTo, int eventMaxAttendance)
-        {
-            EventId = eventId;
-            EventName = eventName;
-            EventDescription = eventDescription;
-            EventDateFrom = eventDateFrom;
-            EventDateTo = eventDateTo;
-            EventMaxAttendance = eventMaxAttendance;
-        }
         public Event(int eventId, string eventName, DateTime eventDateFrom, DateTime eventDateTo, int eventMaxAttendance)
         {
             EventId = eventId;
@@ -49,11 +49,13 @@
             EventMaxAttendance = eventMaxAttendance;
         }
 
-
+        public Event()
+        {
+        }
 
         public override string ToString()
         {
-            return $"{nameof(EventId)}: {EventId},";
+            return base.ToString();
         }
     }
 }
