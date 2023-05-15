@@ -7,11 +7,10 @@ namespace JordnærCase2023.Services
 {
     public class ShiftService : Connection, IShiftService
     {
-        // Query string -- Sql funktioner mangler.
         private string createSql = "insert into JShift (ShiftType_ID, Date_From, Date_To) " +
                                     "Values (@ShiftType, @DateFrom, @DateTo)";
-        private string updateSql = "update JShift set Member_ID = @MemberId, ShiftType_ID = @ShiftTypeId," +
-            "Date_From = @DateFrom, Date_To = @DateTo";
+        private string updateSql = "update JShift set ShiftType_ID = @ShiftTypeId," +
+            "Date_From = @DateFrom, Date_To = @DateTo where Shift_ID = @ShiftId";
         private string deleteSql = "delete from JShift where Shift_ID = @ShiftId";
         private string getAllShiftsSql = "select * from JShift";
         private string getShiftsByIdSql = "select * from JShift where Shift_ID = @ShiftId";
@@ -53,13 +52,13 @@ namespace JordnærCase2023.Services
             }
             return false;
         }
-        public async Task<bool> UpdateShiftAsync(Shift shift)
+        public async Task<bool> UpdateShiftAsync(Shift shift, int shiftTypeId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(updateSql, connection))
                 {
-                    command.Parameters.AddWithValue("@MemberID", shift.MemberID);
+                    command.Parameters.AddWithValue("@ShiftId", shift.ShiftID);
                     command.Parameters.AddWithValue("@ShiftTypeId", shift.ShiftType);
                     command.Parameters.AddWithValue("@DateFrom", shift.DateFrom);
                     command.Parameters.AddWithValue("@DateTo", shift.DateTo);
