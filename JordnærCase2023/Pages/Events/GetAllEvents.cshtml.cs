@@ -35,12 +35,27 @@ namespace JordnærCase2023.Pages.Events
             {
                 Events = await _eventService.GetAllEventsAsync();
             }
-            //if (DateSort == "UpEvent")
-            //    Events.OrderBy(x => x.EventDateFrom).First();
-            //else if (DateSort == "NeEvent")
-            //    throw new Exception();
-            //else
-            //    throw new Exception();
+
+            if (DateSort == "UpEvent")
+            {
+                DateTime closestDate = Events.OrderBy(x => x.EventDateFrom).First().EventDateFrom;
+                foreach (var ev in Events)
+                {
+                    DateTime tempDate = ev.EventDateFrom;
+                    if (tempDate > DateTime.Now && tempDate < closestDate)
+                    {
+                        closestDate = tempDate;
+                    }
+                }
+            }
+            else if (DateSort == "NeEvent")
+            {
+                Events.OrderBy(x => x.EventDateFrom).First();
+            }
+            else
+            {
+                Events.OrderBy(x => x.EventDateFrom).Last();
+            }
 
 
 
