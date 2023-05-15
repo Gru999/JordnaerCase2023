@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<IEventService, EventService>();
 builder.Services.AddTransient<IShiftService, ShiftService>();
+builder.Services.AddTransient<IShiftTypeService, ShiftTypeService>();
 builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddTransient<IMemberService, MemberService>();
 

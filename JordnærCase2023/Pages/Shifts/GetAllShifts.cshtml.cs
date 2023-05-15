@@ -13,13 +13,12 @@ namespace JordnærCase2023.Pages.Shifts
         public IShiftService _shiftService { get; set; }
         public GetAllShiftsModel(IShiftService shiftService)
         {
-            //FilterCriteria = "";
             _shiftService = shiftService;
         }
 
         public async Task OnGetAsync()
         {
-            //if (!FilterCriteria == null)
+            //if (!string.IsNullOrEmpty(FilterCriteria))
             //{
             //    Shifts = await _shiftService.GetShiftsByIdAsync(FilterCriteria);
             //}
