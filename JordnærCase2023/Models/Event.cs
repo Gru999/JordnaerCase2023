@@ -10,6 +10,10 @@
         public string? EventImg { get; set; }
         public int EventMaxAttendance { get; set; }
 
+        public Event()
+        {
+        }
+
         public Event(int eventId, string eventName, string? eventDescription, DateTime eventDateFrom, DateTime eventDateTo, string? eventImg, int eventMaxAttendance)
         {
             EventId = eventId;
@@ -47,10 +51,6 @@
             EventDateFrom = eventDateFrom;
             EventDateTo = eventDateTo;
             EventMaxAttendance = eventMaxAttendance;
-        }
-
-        public Event()
-        {
         }
 
         public override string ToString()

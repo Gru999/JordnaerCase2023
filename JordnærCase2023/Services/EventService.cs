@@ -10,7 +10,8 @@ namespace JordnærCase2023.Services
         private string queryCreate = "insert into JEvent (Event_Name, Event_Description, Date_From, Date_To, Event_Img, Max_EventMembers)" +
                                      "values (@EventName, @EventDescription, @DateFrom, @DateTo, @EventImg, @MaxEventMembers)";
         private string queryDelete = "delete from JEvent where Event_ID = @EventID";
-        private string queryUpdate = "update JEvent set Event_ID = @EventID, Event_Name = @EventName, Event_Description = @EventDescription, Date_From = @DateFrom, Date_To = @DateTo, Event_Img = @EventImg, Max_EventMembers = @MaxEventMembers where Event_ID = @EventID";
+        private string queryUpdate = "update JEvent set Event_Name = @EventName, Event_Description = @EventDescription, Date_From = @DateFrom, Date_To = @DateTo, " +
+                                     "Event_Img = @EventImg, Max_EventMembers = @MaxEventMembers where Event_ID = @EventID";
         private string queryEventFromId = "select * from JEvent where Event_ID = @EventID";
         private string queryGetAllEvent = "select * from JEvent";
         private string queryGetAllEventByName = "select * from JEvent where Event_Name = @EventName";
@@ -228,7 +229,7 @@ namespace JordnærCase2023.Services
             return null;
         }
 
-        public async Task<bool> UpdateEventAsync(Event _event, int eventId)
+        public async Task<bool> UpdateEventAsync(Event _event)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -255,10 +256,15 @@ namespace JordnærCase2023.Services
                     {
                         command.Parameters.AddWithValue("@EventImg", _event.EventImg);
                     }
-                    command.Parameters.AddWithValue("@MaxEventMemebers", _event.EventMaxAttendance);
+                    command.Parameters.AddWithValue("@MaxEventMembers", _event.EventMaxAttendance);
                     await command.Connection.OpenAsync();
-                    int resultUpdate = await command.ExecuteNonQueryAsync();
-                    return resultUpdate == 1;
+                    int noOfRows = await command.ExecuteNonQueryAsync();
+                    if (noOfRows == 1)
+                    {
+                        return true;
+                    }
+
+                    return false;
                 }
                 catch (SqlException sqlEx)
                 {
@@ -267,7 +273,6 @@ namespace JordnærCase2023.Services
                 catch (Exception ex)
                 {
                     Console.WriteLine("Generel fejl " + ex.Message);
-                    throw ex;
                 }
             }
             return false;
