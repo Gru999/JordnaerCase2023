@@ -6,8 +6,9 @@ namespace JordnærCase2023.Interfaces
     {
         Task<List<Member>> GetAllMembersAsync();
         Task<bool> CreateMemberAsync(Member member);
-        Task<bool> UpdateMemberAsync(Member member, int memberID);
+        Task<bool> UpdateMemberAsync(Member member);
         Task<bool> DeleteMemberAsync(int memberID);
         Task<List<Member>> GetMembersByName(string memberName);
+        Task<Member> GetMemberByID(int memberID);
     }
 }

@@ -1,0 +1,52 @@
+﻿@page
+@model JordnærCase2023.Pages.Members.UpdateMemberModel
+@{
+    ViewData["Title"] = "Rediger medlem";
+}
+
+<h1>Rediger medlem?</h1>
+
+<div>
+    <form method="post">
+
+        <div class="form-group">
+            <label asp-for="@Model.MemberToUpdate.Id" class="control-label">Navn</label>
+            <input asp-for="@Model.MemberToUpdate.Id" class="form-control" hidden />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.MemberToUpdate.Name" class="control-label">Navn</label>
+            <input asp-for="@Model.MemberToUpdate.Name" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.MemberToUpdate.Phone" class="control-label">Tlf.</label>
+            <input asp-for="@Model.MemberToUpdate.Phone" class="form-control" placeholder="..." />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.MemberToUpdate.Email" class="control-label">E-mail</label>
+            <input asp-for="@Model.MemberToUpdate.Email" class="form-control" placeholder="..." />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.MemberToUpdate.Password" class="control-label">Kodeord</label>
+            <input asp-for="@Model.MemberToUpdate.Password" class="form-control" placeholder="..." />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.MemberToUpdate.SanitationCourse" class="control-label">Hygiejne kursus</label>
+            <input type="checkbox" asp-for="@Model.MemberToUpdate.SanitationCourse" value="true" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.MemberToUpdate.Admin" class="control-label">Adminstrator</label>
+            <input type="checkbox" asp-for="@Model.MemberToUpdate.Admin" value="true" />
+        </div>
+
+        <div class="form-group">
+            <a asp-page="AllMembers">Tilbage</a>
+            <input type="submit" value="Rediger medlem" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
