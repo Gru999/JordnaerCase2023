@@ -28,6 +28,18 @@
             <th>
                 Description
             </th>
+            <th>
+                DateFrom
+            </th>
+            <th>
+                DateTo
+            </th>
+            <th>
+                EventImg
+            </th>
+            <th>
+                MaxAtt.
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -59,7 +71,7 @@
                     </td>
                     <td>
                         <a asp-page="UpdateEvent" asp-route-id="@item.EventId">Update</a> |
-                        <a asp-page="DeleteEvent" asp-route-id="@item.EventId">Delete</a> |
+                        <a asp-page="DeleteEvent" asp-route-id="@item.EventId">Delete</a>
                     </td>
                 </tr>
             }
