@@ -14,7 +14,7 @@ namespace JordnærCase2023.Services
                                      "Event_Img = @EventImg, Max_EventMembers = @MaxEventMembers where Event_ID = @EventID";
         private string queryEventFromId = "select * from JEvent where Event_ID = @EventID";
         private string queryGetAllEvent = "select * from JEvent";
-        private string queryGetAllEventByName = "select * from JEvent where Event_Name = @EventName";
+        private string queryGetAllEventByName = "select * from JEvent where Event_Name like @EventName";
 
         public EventService(IConfiguration configuration) : base(configuration)
         {
