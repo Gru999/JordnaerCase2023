@@ -23,20 +23,22 @@
         <th></th>
         <th></th>
     </tr>
-    @foreach (var item in Model.Members)
-    {
-        <tr>
-            <td></td>
-            <td>@item.Id</td>
-            <td>@item.Name</td>
-            <td>@item.Phone</td>
-            <td>@item.Email</td>
-            <td>
-                <a asp-page="UpdateMember" asp-route-memberId="@item.Id">Rediger</a>
-            </td>
-            <td>
-                <a asp-page="DeleteMember" asp-route-memberId="@item.Id">Slet</a>
-            </td>
-        </tr>
+    @if(Model.Members.Count > 0){
+        @foreach (var item in Model.Members)
+        {
+            <tr>
+                <td></td>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Phone</td>
+                <td>@item.Email</td>
+                <td>
+                    <a asp-page="UpdateMember" asp-route-memberId="@item.Id">Rediger</a>
+                </td>
+                <td>
+                    <a asp-page="DeleteMember" asp-route-memberId="@item.Id">Slet</a>
+                </td>
+            </tr>
+        }
     }
 </table>

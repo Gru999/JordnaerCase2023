@@ -1,0 +1,32 @@
+﻿@page
+@model JordnærCase2023.Pages.Members.DeleteMemberModel
+@{
+    ViewData["Title"] = "Slet medlem";
+}
+
+
+<h1>Slet medlem?</h1>
+
+<div>
+    <form method="post">
+
+        <div class="form-group">
+            <label asp-for="@Model.MemberToDelete.Name" class="control-label">Navn</label>
+            <input asp-for="@Model.MemberToDelete.Name" class="form-control" readonly/>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.MemberToDelete.Phone" class="control-label">Tlf.</label>
+            <input asp-for="@Model.MemberToDelete.Phone" class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.MemberToDelete.Email" class="control-label">E-mail</label>
+            <input asp-for="@Model.MemberToDelete.Email" class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Slet medlem" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
