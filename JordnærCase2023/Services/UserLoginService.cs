@@ -15,11 +15,11 @@ namespace JordnærCase2023.Services
             return await _memberService.GetAllMembersAsync();
         }
 
-        public Member VerifyUser(string username, string password)
+        public Member VerifyUser(string email, string password)
         {
             foreach (var member in GetAllUsers().Result)
             {
-                if (username.Equals(member.Email) && password.Equals(member.Password))
+                if (email.Equals(member.Email) && password.Equals(member.Password))
                 {
                     return member;
                 }

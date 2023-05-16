@@ -20,8 +20,8 @@ namespace JordnærCase2023.Pages.Events
         }
         public async Task OnGetAsync()
         {
-            //UserName = HttpContext.Session.GetString("UserName");
-            //if(UserName == null)
+            //Email = HttpContext.Session.GetString("Email");
+            //if(Email == null)
             //{
             //    return RedirectToPage("/Login");
             //}
@@ -36,26 +36,30 @@ namespace JordnærCase2023.Pages.Events
                 Events = await _eventService.GetAllEventsAsync();
             }
 
-            if (DateSort == "UpEvent")
-            {
-                DateTime closestDate = Events.OrderBy(x => x.EventDateFrom).First().EventDateFrom;
-                foreach (var ev in Events)
-                {
-                    DateTime tempDate = ev.EventDateFrom;
-                    if (tempDate > DateTime.Now && tempDate < closestDate)
-                    {
-                        closestDate = tempDate;
-                    }
-                }
-            }
-            else if (DateSort == "NeEvent")
-            {
-                Events.OrderBy(x => x.EventDateFrom).First();
-            }
-            else
-            {
-                Events.OrderBy(x => x.EventDateFrom).Last();
-            }
+            //if (DateSort == "UpEvent")
+            //{
+            //    DateTime closestDate = Events.OrderBy(x => x.EventDateFrom).First().EventDateFrom;
+            //    foreach (var ev in Events)
+            //    {
+            //        DateTime tempDate = ev.EventDateFrom;
+            //        if (tempDate > DateTime.Now && tempDate < closestDate)
+            //        {
+            //            closestDate = tempDate;
+            //        }
+            //    }
+            //}
+            //else if (DateSort == "NeEvent")
+            //{
+            //    Events.OrderBy(x => x.EventDateFrom).First();
+            //}
+            //else if (DateSort == "OlEvent")
+            //{
+            //    Events.OrderBy(x => x.EventDateFrom).Last();
+            //}
+            //else
+            //{
+            //    Events = await _eventService.GetAllEventsAsync();
+            //}
 
 
 
