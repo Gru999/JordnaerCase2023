@@ -246,23 +246,23 @@ namespace JordnærCase2023.Services
                     while (await reader.ReadAsync())
                     {
                         int eventId = reader.GetInt32(0);
-                        string eventName = reader.GetString(1);
-                        string? eventDescription = null;
-                        if (!reader.IsDBNull(2))
-                        {
-                            eventDescription = reader.GetString(2);
-                        }
-                        DateTime dateFrom = reader.GetDateTime(3);
-                        DateTime dateTo = reader.GetDateTime(4);
-                        string? eventImg = null;
-                        if (!reader.IsDBNull(5))
-                        {
-                            eventImg = reader.GetString(5);
-                        }
-                        int maxEventMembers = reader.GetInt32(6);
+                        //string eventName = reader.GetString(1);
+                        //string? eventDescription = null;
+                        //if (!reader.IsDBNull(2))
+                        //{
+                        //    eventDescription = reader.GetString(2);
+                        //}
+                        //DateTime dateFrom = reader.GetDateTime(3);
+                        //DateTime dateTo = reader.GetDateTime(4);
+                        //string? eventImg = null;
+                        //if (!reader.IsDBNull(5))
+                        //{
+                        //    eventImg = reader.GetString(5);
+                        //}
+                        //int maxEventMembers = reader.GetInt32(6);
 
-                        Event _event = new Event(eventId, eventName, eventDescription, dateFrom, dateTo, eventImg, maxEventMembers);
-                        events.Add(_event);
+                        //Event _event = new Event(eventId, eventName, eventDescription, dateFrom, dateTo, eventImg, maxEventMembers);
+                        //events.Add(_event);
                     }
                 }
                 catch (SqlException sqlEx)
