@@ -17,10 +17,13 @@
         <label asp-for="@Model.Events" class="control-label"></label>
         <select name="DateSort" class="form-control">
             <option value="">Sort for Date</option>
-            <option value="UpEvent">Upcoming Events</option>
-            <option value="NeEvent">New Events</option>
-            <option value="OlEvent">Old Events</option>
+            <option value="UEvent">Upcoming Events</option>
+            <option value="NEvent">New Events</option>
+            <option value="OEvent">Old Events</option>
         </select>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Sort" class="btn btn-primary" />
     </div>
 </form>
 

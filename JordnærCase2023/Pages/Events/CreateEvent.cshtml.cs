@@ -42,6 +42,7 @@ namespace JordnærCase2023.Pages.Events
 
 
             await _eventService.CreateEventAsync(Event);
+            //await _eventService.CreateEventMemberAsync(Member ,Event.EventId);
             return RedirectToPage("GetAllEvents");
         }
 

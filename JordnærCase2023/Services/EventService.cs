@@ -17,7 +17,8 @@ namespace JordnærCase2023.Services
         private string queryGetAllEventByName = "select * from JEvent where Event_Name like @EventName";
 
         //For EventMember
-        private string queryGetAllEventsForMember =  "select * from EventMember where Member_Id = @MemebrId";
+        private string queryGetAllEventsForMember = "select JEvent.Event_ID, JEvent.Event_Name, JEvent.Event_Description, JEvent.Date_From, JEvent.Date_To, JEvent.Event_Img, JEvent.Max_EventMembers from JEvent, EventMember where JEvent.Event_ID = EventMember.Event_ID AND EventMember.Member_ID = @MemberId";
+        private string queryCreateEventMember = "insert into EventMember values (@MemberId, @EventId)";
 
         public EventService(IConfiguration configuration) : base(configuration)
         {
@@ -231,53 +232,6 @@ namespace JordnærCase2023.Services
             return null;
         }
 
-        //For EventMember
-        public async Task<List<Event>> GetEventsForMemberAsync(int memberId)
-        {
-            List<Event> events = new List<Event>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    SqlCommand commmand = new SqlCommand(queryGetAllEventsForMember, connection);
-                    commmand.Parameters.AddWithValue("@MemberId", memberId);
-                    await commmand.Connection.OpenAsync();
-                    SqlDataReader reader = await commmand.ExecuteReaderAsync();
-                    while (await reader.ReadAsync())
-                    {
-                        int eventId = reader.GetInt32(0);
-                        //string eventName = reader.GetString(1);
-                        //string? eventDescription = null;
-                        //if (!reader.IsDBNull(2))
-                        //{
-                        //    eventDescription = reader.GetString(2);
-                        //}
-                        //DateTime dateFrom = reader.GetDateTime(3);
-                        //DateTime dateTo = reader.GetDateTime(4);
-                        //string? eventImg = null;
-                        //if (!reader.IsDBNull(5))
-                        //{
-                        //    eventImg = reader.GetString(5);
-                        //}
-                        //int maxEventMembers = reader.GetInt32(6);
-
-                        //Event _event = new Event(eventId, eventName, eventDescription, dateFrom, dateTo, eventImg, maxEventMembers);
-                        //events.Add(_event);
-                    }
-                }
-                catch (SqlException sqlEx)
-                {
-                    Console.WriteLine("Database error " + sqlEx.Message);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Generel error " + ex.Message);
-                }
-                return events;
-            }
-            return null;
-        }
-
         public async Task<bool> UpdateEventAsync(Event _event)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -325,6 +279,90 @@ namespace JordnærCase2023.Services
                 }
             }
             return false;
+        }
+
+
+        //For EventMember
+        public async Task<bool> CreateEventMemberAsync(int memberId, int eventId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(queryCreateEventMember, connection))
+                {
+                    command.Parameters.AddWithValue("@MemberId", memberId);
+                    command.Parameters.AddWithValue("@EventId", eventId);
+                    try
+                    {
+                        command.Connection.Open();
+                        int noOfRows = await command.ExecuteNonQueryAsync();
+
+                        if (noOfRows == 1)
+                        {
+                            return true;
+                        }
+
+                        return false;
+                    }
+                    catch (SqlException sqlex)
+                    {
+                        Console.WriteLine("Database error");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Generel fejl " + ex.Message);
+
+                    }
+                }
+
+            }
+            return false;
+        }
+
+        //For EventMember
+        public async Task<List<Event>> GetEventsForMemberAsync(int memberId)
+        {
+            List<Event> events = new List<Event>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand commmand = new SqlCommand(queryGetAllEventsForMember, connection);
+                    commmand.Parameters.AddWithValue("@MemberId", memberId);
+                    await commmand.Connection.OpenAsync();
+                    SqlDataReader reader = await commmand.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        int eventId = reader.GetInt32(0);
+                        string eventName = reader.GetString(1);
+                        string? eventDescription = null;
+                        if (!reader.IsDBNull(2))
+                        {
+                            eventDescription = reader.GetString(2);
+                        }
+                        DateTime dateFrom = reader.GetDateTime(3);
+                        DateTime dateTo = reader.GetDateTime(4);
+                        string? eventImg = null;
+                        if (!reader.IsDBNull(5))
+                        {
+                            eventImg = reader.GetString(5);
+                        }
+                        int maxEventMembers = reader.GetInt32(6);
+
+                        Event _event = new Event(eventId, eventName, eventDescription, dateFrom, dateTo, eventImg, maxEventMembers);
+                        events.Add(_event);
+                    }
+                }
+                catch (SqlException sqlEx)
+                {
+                    Console.WriteLine("Database error " + sqlEx.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Generel error " + ex.Message);
+                }
+            }
+            return events;
         }
     }
 }

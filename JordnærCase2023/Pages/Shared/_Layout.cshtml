@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@inject IHttpContextAccessor httpContext
+@using JordnærCase2023.Services
+@using JordnærCase2023.Interfaces
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -34,7 +38,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
                         </li>
-
+                        @*@{
+                            string email = httpContext.HttpContext.Session.GetString("Email");
+                            if (email != null) {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-page="/Login" asp-page-handler="Logout">Logout</a>
+                                </li>
+                                <li class="nav-item" class="float-right" style="font-size: medium">
+                                    @email
+                                </li>
+                            } else {
+                                <li class="nav-item">
+                                    <a asp-page="/Login" class="float-right btn btn-primary" style="font-size: medium">Log In</a>
+                                </li>
+                            }
+                        }*@
                     </ul>
                 </div>
             </div>

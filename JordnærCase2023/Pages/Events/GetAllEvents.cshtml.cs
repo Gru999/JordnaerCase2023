@@ -17,51 +17,49 @@ namespace JordnærCase2023.Pages.Events
         {
             _eventService = eventService;
         }
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(/*string dateSort*/)
         {
             //string email = HttpContext.Session.GetString("Email");
-            //if(Email == null)
-            //{
+            //if (String.IsNullOrEmpty(email)) {
             //    return RedirectToPage("/Login");
             //}
 
-
-            if (!String.IsNullOrEmpty(FilterCriteria))
-            {
+            if (!String.IsNullOrEmpty(FilterCriteria)) {
                 Events = await _eventService.GetEventsByNameAsync(FilterCriteria);
+            } else {
+                Events = await _eventService.GetAllEventsAsync();
             }
+
+
+
+            if (DateSort == "UEvent")
+            {
+                DateTime closestDate = Events.OrderBy(x => x.EventDateFrom).First().EventDateFrom;
+                foreach (var ev in Events)
+                {
+                    DateTime tempDate = ev.EventDateFrom;
+                    if (tempDate > DateTime.Now && tempDate < closestDate)
+                    {
+                        closestDate = tempDate;
+                    }
+                }
+                Events = Events.Where(x => x.EventDateFrom == closestDate).ToList();
+            }
+            //else if (DateSort == "NEvent")
+            //{
+            //    Events = Events.OrderBy(x => x.EventDateFrom).ToList();
+            //}
+            //else if (DateSort == "OEvent")
+            //{
+            //    Events = Events.OrderByDescending(x => x.EventDateFrom).ToList();
+            //}
             else
             {
                 Events = await _eventService.GetAllEventsAsync();
             }
 
-            //if (DateSort == "UpEvent")
-            //{
-            //    DateTime closestDate = Events.OrderBy(x => x.EventDateFrom).First().EventDateFrom;
-            //    foreach (var ev in Events)
-            //    {
-            //        DateTime tempDate = ev.EventDateFrom;
-            //        if (tempDate > DateTime.Now && tempDate < closestDate)
-            //        {
-            //            closestDate = tempDate;
-            //        }
-            //    }
-            //}
-            //else if (DateSort == "NeEvent")
-            //{
-            //    Events.OrderBy(x => x.EventDateFrom).First();
-            //}
-            //else if (DateSort == "OlEvent")
-            //{
-            //    Events.OrderBy(x => x.EventDateFrom).Last();
-            //}
-            //else
-            //{
-            //    Events = await _eventService.GetAllEventsAsync();
-            //}
 
-
-
+            return Page();
         }
     }
 }
