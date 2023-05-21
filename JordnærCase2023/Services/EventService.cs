@@ -21,7 +21,7 @@ namespace JordnærCase2023.Services
 
         //For EventMember
         private string queryGetAllEventsForMember = "select JEvent.Event_ID, JEvent.Event_Name, JEvent.Event_Description, JEvent.Date_From, JEvent.Date_To, JEvent.Event_Img, JEvent.Max_EventMembers from JEvent, EventMember where JEvent.Event_ID = EventMember.Event_ID AND EventMember.Member_ID = @MemberId";
-        private string queryGetAllMembersForEvent = "";
+        private string queryGetAllMembersForEvent = "select Member.Member_ID, Member.Member_Name, Member.Member_Img, Member.Member_Phone, Member.Member_Email, Member.Member_Password, Member.Member_SanitationCourse, Member.Member_Admin from Member, EventMember where Member.Member_ID = EventMember.Member_ID AND EventMember.Event_ID = @EventId";
         private string queryCreateEventMember = "insert into EventMember values (@MemberId, @EventId)";
         private string queryDeleteEventMember = "";
 
@@ -412,75 +412,38 @@ namespace JordnærCase2023.Services
             return events;
         }
 
-        ////join eventMember
-        //public async Task<bool> JoinEventAsync(Event _event)
-        //{
-        //    using (SqlConnection connection = new SqlConnection(connectionString))
-        //    {
-        //        try
-        //        {
-        //            await connection.OpenAsync();
-        //            int currentAttendance = _event.EventMaxAttendance - 1;
-        //            // Check if the maximum number of attendees has been reached
-        //            if (currentAttendance < _event.EventMaxAttendance)
-        //            {
-        //                // Increment the number of attendees for the event
-        //                currentAttendance++;
-
-        //                // Update the event's attendee count in the database
-        //                SqlCommand updateCommand = new SqlCommand("UPDATE Events SET CurrentAttendees = @CurrentAttendees WHERE EventId = @EventId", connection);
-        //                updateCommand.Parameters.AddWithValue("@CurrentAttendees", currentAttendance);
-        //                updateCommand.Parameters.AddWithValue("@EventId", _event.EventId);
-        //                await updateCommand.ExecuteNonQueryAsync();
-
-        //                return true; // Successfully joined the event
-        //            }
-        //            else
-        //            {
-        //                return false; // Maximum number of attendees reached
-        //            }
-        //        }
-        //        catch (SqlException sqlEx)
-        //        {
-        //            Console.WriteLine("Database error: " + sqlEx.Message);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine("General error: " + ex.Message);
-        //        }
-        //    }
-
-        //    return false;
-        //}
+        //getEventMemberFromId
 
 
-        ////delete eventMember when event deleted
-        //public async Task<Event> DeleteEventMemberAsync(int eventId, int memberId)
-        //{
-        //    using (SqlConnection connection = new SqlConnection(connectionString))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand command = new SqlCommand(queryDeleteEventMember, connection);
-        //            command.Parameters.AddWithValue("@EventId", eventId);
-        //            await command.Connection.OpenAsync();
-        //            SqlDataReader reader = await command.ExecuteReaderAsync();
-        //            if (await reader.ReadAsync())
-        //            {
-        //                return await GetEventFromIdAsync(eventId);
-        //            }
-        //        }
-        //        catch (SqlException sqlEx)
-        //        {
-        //            Console.WriteLine("Database error " + sqlEx.Message);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine("Generel fejl " + ex.Message);
-        //        }
-        //    }
-        //    return null;
-        //}
+        //delete eventMember when event deleted
+        public async Task<Event> DeleteEventMemberAsync(int eventId, int memberId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(queryDeleteEventMember, connection);
+                    command.Parameters.AddWithValue("@EventId", eventId);
+                    command.Parameters.AddWithValue("@MemberId", memberId);
+                    await command.Connection.OpenAsync();
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
+                    if (await reader.ReadAsync())
+                    {
+                        return await GetEventFromIdAsync(eventId);
+                        //return await GetMemberFromIdAsync(memberId);
+                    }
+                }
+                catch (SqlException sqlEx)
+                {
+                    Console.WriteLine("Database error " + sqlEx.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Generel fejl " + ex.Message);
+                }
+            }
+            return null;
+        }
 
 
     }
