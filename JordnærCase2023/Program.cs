@@ -10,16 +10,13 @@ builder.Services.AddTransient<IShiftService, ShiftService>();
 builder.Services.AddTransient<IShiftTypeService, ShiftTypeService>();
 builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddTransient<IMemberService, MemberService>();
+builder.Services.AddTransient<IUserLoginService, UserLoginService>();
 
 // For user login
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
-
-
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

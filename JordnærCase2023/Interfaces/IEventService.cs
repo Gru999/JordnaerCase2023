@@ -9,5 +9,7 @@ namespace JordnærCase2023.Interfaces
         Task<bool> UpdateEventAsync(Event _event);
         Task<Event> DeleteEventAsync(int eventId);
         Task<List<Event>> GetEventsByNameAsync(string name);
+        Task<bool> CreateEMConnectionAsync(int memberId, int eventId);
+        Task<List<Event>> GetEventsForMemberAsync(int memberId);
     }
 }

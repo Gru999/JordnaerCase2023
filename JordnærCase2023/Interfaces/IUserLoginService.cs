@@ -6,6 +6,6 @@ namespace JordnærCase2023.Interfaces
     {
         public Task<List<Member>> GetAllUsers();
 
-        public Member VerifyUser(string username, string password);
+        public Member VerifyUser(string email, string password);
     }
 }

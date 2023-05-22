@@ -1,6 +1,7 @@
 ﻿@page
 @model JordnærCase2023.Pages.LoginModel
 @{
+    ViewData["Title"] = "Login";
 }
 <h1>Please Login</h1>
 
@@ -19,5 +20,6 @@
             <td>&nbsp</td>
             <td><Input type="submit" value="Login" /></td>
         </tr>
+        <a asp-page="/Members/CreateMember">Create a new user</a>
     </table>
 </form>

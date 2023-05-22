@@ -31,8 +31,10 @@
                 <input asp-for="@Model.Event.EventDateTo" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventImg" class="control-label"></label>
-                <input asp-for="@Model.Event.EventImg" class="form-control" />
+                <label asp-for="@Model.Photo" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="@Model.Photo" class="custom-file-input form-control" />
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.Event.EventMaxAttendance" class="control-label"></label>

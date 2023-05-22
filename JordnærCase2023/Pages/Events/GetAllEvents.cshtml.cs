@@ -10,22 +10,56 @@ namespace JordnærCase2023.Pages.Events
         private IEventService _eventService;
         [BindProperty(SupportsGet = true)]
         public string FilterCriteria { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string DateSort { get; set; }
         public List<Event> Events { get; set; }
-        //public string UserName { get; set; }
         public GetAllEventsModel(IEventService eventService)
         {
             _eventService = eventService;
         }
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(/*string dateSort*/)
         {
-            //UserName = HttpContext.Session.GetString("UserName");
-            //if(UserName == null)
-            //{
+            //string email = HttpContext.Session.GetString("Email");
+            //if (String.IsNullOrEmpty(email)) {
             //    return RedirectToPage("/Login");
             //}
 
-            Events = await _eventService.GetAllEventsAsync();
+            if (!String.IsNullOrEmpty(FilterCriteria)) {
+                Events = await _eventService.GetEventsByNameAsync(FilterCriteria);
+            } else {
+                Events = await _eventService.GetAllEventsAsync();
+            }
 
+
+
+            if (DateSort == "UEvent")
+            {
+                DateTime closestDate = Events.OrderBy(x => x.EventDateFrom).First().EventDateFrom;
+                foreach (var ev in Events)
+                {
+                    DateTime tempDate = ev.EventDateFrom;
+                    if (tempDate > DateTime.Now && tempDate < closestDate)
+                    {
+                        closestDate = tempDate;
+                    }
+                }
+                Events = Events.Where(x => x.EventDateFrom == closestDate).ToList();
+            }
+            //else if (DateSort == "NEvent")
+            //{
+            //    Events = Events.OrderBy(x => x.EventDateFrom).ToList();
+            //}
+            //else if (DateSort == "OEvent")
+            //{
+            //    Events = Events.OrderByDescending(x => x.EventDateFrom).ToList();
+            //}
+            else
+            {
+                Events = await _eventService.GetAllEventsAsync();
+            }
+
+
+            return Page();
         }
     }
 }
