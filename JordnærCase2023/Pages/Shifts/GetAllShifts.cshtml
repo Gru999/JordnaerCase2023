@@ -1,4 +1,6 @@
 ﻿@page
+@using JordnærCase2023.Interfaces
+@inject IShiftTypeService shiftTypeService
 @model JordnærCase2023.Pages.Shifts.GetAllShiftsModel
 @{
     ViewData["Title"] = "Get All Shifts";
@@ -45,7 +47,8 @@
                         @item.MemberID
                     </td>
                     <td>
-                        @item.ShiftType
+                        @item.ShiftType |
+                        @shiftTypeService.GetShiftTypeById(item.ShiftType)
                     </td>
                     <td>
                         @item.DateFrom

@@ -1,4 +1,5 @@
 ﻿@page
+@using JordnærCase2023.Models
 @model JordnærCase2023.Pages.Shifts.CreateModel
 @{
     ViewData["Title"] = "Create Shift";
@@ -15,7 +16,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.ShiftCreate.ShiftType" class="control-label"></label>
-                <input asp-for="@Model.ShiftCreate.ShiftType" class="form-control" />
+                <select asp-for="@Model.SelectedShiftType"  class="form-control">
+                    <option value="">Select Shift Type her</option>
+                    @foreach (var sType in Model.ShiftTypes)
+                    {
+                        <option value="@sType.Id">@sType.Name</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.ShiftCreate.DateFrom" class="control-label"></label>

@@ -1,5 +1,6 @@
 using JordnærCase2023.Interfaces;
 using JordnærCase2023.Models;
+using JordnærCase2023.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

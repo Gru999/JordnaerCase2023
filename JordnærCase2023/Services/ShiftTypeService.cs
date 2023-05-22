@@ -11,14 +11,16 @@ namespace JordnærCase2023.Services
             return MockData.ShiftTypes;
         }
 
-        public List<ShiftType> GetShiftTypeById(int id) 
+        public ShiftType GetShiftTypeById(int id)
         {
-            List<ShiftType> shiftTypes = new List<ShiftType>();
-            for (int i = 0; i < 5; i++)
+            foreach (var item in MockData.ShiftTypes)
             {
-                shiftTypes.Add(MockData.ShiftTypes[i]);
+                if (item.Id == id)
+                {
+                    return item;
+                }
             }
-            return shiftTypes;
+            return null;
         }
     }
 }

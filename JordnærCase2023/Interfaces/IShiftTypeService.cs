@@ -5,7 +5,7 @@ namespace JordnærCase2023.Interfaces
 {
     public interface IShiftTypeService
     {
-        List<ShiftType> GetShiftTypeById(int id);
+        ShiftType GetShiftTypeById(int id);
         List<ShiftType> GetAllShiftTypes();
         //Task<bool> CreateShiftTypeAsync(ShiftType shiftType);
         //Task<bool> UpdateShiftType(ShiftType shiftType, int shiftId);
