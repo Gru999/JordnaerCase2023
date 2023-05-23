@@ -15,10 +15,10 @@
 <form method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="@Model.Events" class="control-label"></label>
-        <select name="DateSort" class="form-control">
-            <option value="">Sort for Date</option>
+        <select name="Sort" class="form-control">
+            <option value="">Sort Events</option>
             <option value="UEvent">Upcoming Events</option>
-            <option value="NEvent">New Events</option>
+            <option value="JoinedEvents">Joined Events</option>
             <option value="OEvent">Old Events</option>
         </select>
     </div>

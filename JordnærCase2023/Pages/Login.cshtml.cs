@@ -18,16 +18,7 @@ namespace JordnærCase2023.Pages
             _userLoginService = userLoginService;
         }
 
-        public void OnGet() {
-            string email = HttpContext.Session.GetString("Email");
-            if (email != null)
-            {
-                ViewData["Email"] = email;
-            }
-            else
-            {
-                ViewData["Email"] = null;
-            }
+        public void OnGet() {  
         }
 
         public void OnGetLogout() {

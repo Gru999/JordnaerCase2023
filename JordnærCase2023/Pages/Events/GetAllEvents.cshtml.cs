@@ -11,7 +11,7 @@ namespace JordnærCase2023.Pages.Events
         [BindProperty(SupportsGet = true)]
         public string FilterCriteria { get; set; }
         [BindProperty(SupportsGet = true)]
-        public string DateSort { get; set; }
+        public string Sort { get; set; }
         public List<Event> Events { get; set; }
         public GetAllEventsModel(IEventService eventService)
         {
@@ -19,10 +19,11 @@ namespace JordnærCase2023.Pages.Events
         }
         public async Task<IActionResult> OnGetAsync(/*string dateSort*/)
         {
-            //string email = HttpContext.Session.GetString("Email");
-            //if (String.IsNullOrEmpty(email)) {
-            //    return RedirectToPage("/Login");
-            //}
+            string email = HttpContext.Session.GetString("Email");
+            if (String.IsNullOrEmpty(email))
+            {
+                return RedirectToPage("/Login");
+            }
 
             if (!String.IsNullOrEmpty(FilterCriteria)) {
                 Events = await _eventService.GetEventsByNameAsync(FilterCriteria);
@@ -32,7 +33,7 @@ namespace JordnærCase2023.Pages.Events
 
 
 
-            if (DateSort == "UEvent")
+            if (Sort == "UEvent")
             {
                 DateTime closestDate = Events.OrderBy(x => x.EventDateFrom).First().EventDateFrom;
                 foreach (var ev in Events)
@@ -45,10 +46,10 @@ namespace JordnærCase2023.Pages.Events
                 }
                 Events = Events.Where(x => x.EventDateFrom == closestDate).ToList();
             }
-            //else if (DateSort == "NEvent")
-            //{
-            //    Events = Events.OrderBy(x => x.EventDateFrom).ToList();
-            //}
+            else if (Sort == "JoinedsEvent")
+            {
+                Events = Events.OrderBy(x => x.EventDateFrom).ToList();
+            }
             //else if (DateSort == "OEvent")
             //{
             //    Events = Events.OrderByDescending(x => x.EventDateFrom).ToList();

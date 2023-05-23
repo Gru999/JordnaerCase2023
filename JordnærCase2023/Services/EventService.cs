@@ -12,7 +12,7 @@ namespace JordnærCase2023.Services
     {
         private string queryCreate = "insert into JEvent (Event_Name, Event_Description, Date_From, Date_To, Event_Img, Max_EventMembers)" +
                                      "values (@EventName, @EventDescription, @DateFrom, @DateTo, @EventImg, @MaxEventMembers)";
-        private string queryDelete = "delete from JEvent where Event_ID = @EventID";
+        private string queryDeleteEventAndEventMember = "delete JEvent, EventMember from JEvent inner join EventMember on JEvent.Event_ID = EventMember.Event_ID where JEvent.Event_ID = @EventId and EventMember.Member_ID = @MemberId";
         private string queryUpdate = "update JEvent set Event_Name = @EventName, Event_Description = @EventDescription, Date_From = @DateFrom, Date_To = @DateTo, " +
                                      "Event_Img = @EventImg, Max_EventMembers = @MaxEventMembers where Event_ID = @EventID";
         private string queryEventFromId = "select * from JEvent where Event_ID = @EventID";
@@ -23,7 +23,8 @@ namespace JordnærCase2023.Services
         private string queryGetAllEventsForMember = "select JEvent.Event_ID, JEvent.Event_Name, JEvent.Event_Description, JEvent.Date_From, JEvent.Date_To, JEvent.Event_Img, JEvent.Max_EventMembers from JEvent, EventMember where JEvent.Event_ID = EventMember.Event_ID AND EventMember.Member_ID = @MemberId";
         private string queryGetAllMembersForEvent = "select Member.Member_ID, Member.Member_Name, Member.Member_Img, Member.Member_Phone, Member.Member_Email, Member.Member_Password, Member.Member_SanitationCourse, Member.Member_Admin from Member, EventMember where Member.Member_ID = EventMember.Member_ID AND EventMember.Event_ID = @EventId";
         private string queryCreateEventMember = "insert into EventMember values (@MemberId, @EventId)";
-        private string queryDeleteEventMember = "";
+        //private string queryDeleteEventMember = "delete from EventMember where Event_ID = @EventId AND Member_ID = @MemberId";
+        private string queryEventMemberFromId = "select * from EventMember where Event_ID = @EventId AND Member_ID = @MemberId";
 
         public EventService(IConfiguration configuration) : base(configuration)
         {
@@ -71,14 +72,15 @@ namespace JordnærCase2023.Services
             return false;
         }
 
-        public async Task<Event> DeleteEventAsync(int eventId)
+        public async Task<Event> DeleteEventAsync(int eventId, int memberId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand(queryDelete, connection);
+                    SqlCommand command = new SqlCommand(queryDeleteEventAndEventMember, connection);
                     command.Parameters.AddWithValue("@EventId", eventId);
+                    command.Parameters.AddWithValue("@MemberId", memberId);
                     await command.Connection.OpenAsync();
                     SqlDataReader reader = await command.ExecuteReaderAsync();
                     if (await reader.ReadAsync())
@@ -372,7 +374,7 @@ namespace JordnærCase2023.Services
 
         public async Task<List<Member>> GetMembersFromEventAsync(int eventId)
         {
-            List<Member> events = new List<Member>();
+            List<Member> members = new List<Member>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
@@ -397,7 +399,7 @@ namespace JordnærCase2023.Services
                         bool admin = reader.GetBoolean(7);
 
                         Member m = new Member(memberId, memberName, image, phone, email, password, sanitationcourse, admin);
-                        events.Add(m);
+                        members.Add(m);
                     }
                 }
                 catch (SqlException sqlEx)
@@ -409,28 +411,33 @@ namespace JordnærCase2023.Services
                     Console.WriteLine("Generel error " + ex.Message);
                 }
             }
-            return events;
+            return members;
         }
 
         //getEventMemberFromId
-
-
-        //delete eventMember when event deleted
-        public async Task<Event> DeleteEventMemberAsync(int eventId, int memberId)
+        //First member is always creator
+        public async Task<Tuple<int, int, int>> GetEventMemberFromIdAsync(int eventId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand(queryDeleteEventMember, connection);
+                    SqlCommand command = new SqlCommand(queryEventMemberFromId, connection);
                     command.Parameters.AddWithValue("@EventId", eventId);
+                    List<Member> memberList = await GetMembersFromEventAsync(eventId);
+                    int memberId = memberList.FirstOrDefault().Id;
                     command.Parameters.AddWithValue("@MemberId", memberId);
                     await command.Connection.OpenAsync();
                     SqlDataReader reader = await command.ExecuteReaderAsync();
                     if (await reader.ReadAsync())
                     {
-                        return await GetEventFromIdAsync(eventId);
-                        //return await GetMemberFromIdAsync(memberId);
+                        int eventMemberID = reader.GetInt32(0);
+                        int memberID = reader.GetInt32(1);
+                        int eventID = reader.GetInt32(2);
+
+                        Tuple<int, int, int> eventTuple = new Tuple<int, int, int>(eventMemberID, memberID, eventID);
+                        return eventTuple;
+                        
                     }
                 }
                 catch (SqlException sqlEx)
@@ -444,7 +451,5 @@ namespace JordnærCase2023.Services
             }
             return null;
         }
-
-
     }
 }
