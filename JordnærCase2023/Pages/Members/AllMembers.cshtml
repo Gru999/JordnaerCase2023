@@ -6,12 +6,14 @@
 
 <h1>Medlemmer</h1>
 
-<a asp-page="CreateMember">Opret nyt medlem</a>
-
+<div style="display:flex; justify-content:space-between">
 <form method="get">
     <input type="text" asp-for="@Model.FilterCriteria" placeholder="Søg efter navn..."/>
-    <input type="submit" value="Filter" />
+    <input type="submit" value="Filter"/>
 </form>
+
+<a asp-page="CreateMember" class="btn btn-primary">Opret nyt medlem</a>
+</div>
 
 <table class="table">
     <tr>
@@ -27,9 +29,11 @@
         @foreach (var item in Model.Members)
         {
             <tr>
-                <td></td>
+                <td><img src="~/Images/Members/@item.Image" class="rounded-circle" height="75" width="75"/></td>
                 <td>@item.Id</td>
-                <td>@item.Name</td>
+                <td>
+                    <a asp-page="MemberPage" asp-route-memberId="@item.Id">@item.Name</a>
+                </td>
                 <td>@item.Phone</td>
                 <td>@item.Email</td>
                 <td>

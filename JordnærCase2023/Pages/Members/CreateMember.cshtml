@@ -8,26 +8,43 @@
 
 
 <div>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
+
+        @if (Model.Message != null)
+        {
+            <p class="text-danger">@Model.Message</p>
+        }
 
         <div class="form-group">
             <label asp-for="@Model.newMember.Name" class="control-label">Navn</label>
-            <input asp-for="@Model.newMember.Name" class="form-control" placeholder="..." />
+            <input asp-for="@Model.newMember.Name" class="form-control" />
         </div>
 
         <div class="form-group">
             <label asp-for="@Model.newMember.Phone" class="control-label">Tlf.</label>
-            <input asp-for="@Model.newMember.Phone" class="form-control" placeholder="..." />
+            <input asp-for="@Model.newMember.Phone" class="form-control" />
         </div>
 
         <div class="form-group">
             <label asp-for="@Model.newMember.Email" class="control-label">E-mail</label>
-            <input asp-for="@Model.newMember.Email" class="form-control" placeholder="..." />
+            <input asp-for="@Model.newMember.Email" class="form-control" />
         </div>
 
         <div class="form-group">
             <label asp-for="@Model.newMember.Password" class="control-label">Kodeord</label>
-            <input asp-for="@Model.newMember.Password" class="form-control" placeholder="..." />
+            <input type="password" asp-for="@Model.newMember.Password" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.PasswordMatch">Gentag kodeord</label>
+            <input type="password" asp-for="@Model.PasswordMatch" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.Photo" class="control-label">Billede</label>
+            <div class="custom-file">
+                <input asp-for="@Model.Photo" class="custom-file-input form-control" />
+            </div>
         </div>
 
         <div class="form-group">

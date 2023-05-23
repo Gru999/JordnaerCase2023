@@ -93,7 +93,7 @@ namespace JordnærCase2023.Services
                     }
                     else
                     {
-                        command.Parameters.AddWithValue("@Image", DBNull.Value);
+                        command.Parameters.AddWithValue("@Image", "basic_pfp.png");
                     }
                     command.Parameters.AddWithValue("@Phone", member.Phone);
                     command.Parameters.AddWithValue("@Email", member.Email);
@@ -139,7 +139,7 @@ namespace JordnærCase2023.Services
                     }
                     else
                     {
-                        command.Parameters.AddWithValue("@Image", DBNull.Value);
+                        command.Parameters.AddWithValue("@Image", "basic_pfp.png");
                     }
                     command.Parameters.AddWithValue("@Phone", member.Phone);
                     command.Parameters.AddWithValue("@Email", member.Email);
