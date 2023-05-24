@@ -2,23 +2,37 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using JordnærCase2023.Models;
 using JordnærCase2023.Interfaces;
+using JordnærCase2023.Services;
 
 namespace JordnærCase2023.Pages.Events
 {
     public class DeleteEventModel : PageModel
     {
         private IEventService _eventService;
+        private IUserLoginService userLoginService;
         [BindProperty]
         public Event Event { get; set; }
-        public DeleteEventModel(IEventService eventService) {
+        public string Email { get; set; }
+        public DeleteEventModel(IEventService eventService, IUserLoginService userLoginService)
+        {
             _eventService = eventService;
-        }
-        public async Task OnGetAsync(int id) {
-            Event = await _eventService.GetEventFromIdAsync(id);
+            this.userLoginService = userLoginService;
         }
 
-        public async Task<IActionResult> OnPostAsync(/*int id*/) {
-            //Id can be bound through the frontPage commented out part, instead of going through the OnGet and then OnPost
+        public async Task<IActionResult> OnGetAsync(int id) {
+            Email = HttpContext.Session.GetString("Email");
+            if (String.IsNullOrEmpty(Email))
+            {
+                return RedirectToPage("/Login");
+            }
+            Event = await _eventService.GetEventFromIdAsync(id);
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync() {
+            Email = HttpContext.Session.GetString("Email");
+            int emMemberId = userLoginService.GetLoggedMember(Email).Id;
+            await _eventService.DeleteEMAsync(Event.EventId, emMemberId);
             await _eventService.DeleteEventAsync(Event.EventId);
             return RedirectToPage("GetAllEvents");
         }

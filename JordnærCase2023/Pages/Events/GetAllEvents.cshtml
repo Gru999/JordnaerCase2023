@@ -1,5 +1,10 @@
 ﻿@page
 @model JordnærCase2023.Pages.Events.GetAllEventsModel
+@using JordnærCase2023.Services
+@using JordnærCase2023.Interfaces
+@using JordnærCase2023.Models
+@inject IUserLoginService _userLoginService
+@inject IEventService _eventService
 @{
     ViewData["Titel"] = "GetAllEvents";
 }
@@ -21,14 +26,12 @@
             <option value="JoinedEvents">Joined Events</option>
             <option value="OEvent">Old Events</option>
         </select>
-    </div>
-    <div class="form-group">
         <input type="submit" value="Sort" class="btn btn-primary" />
     </div>
 </form>
 
 <p>
-    <a asp-page="CreateEvent">Create Event</a>
+    <a asp-page="CreateEvent" class="btn btn-primary" style="font-size: medium">Create Event</a>
 </p>
 
 <table class="table">
@@ -85,8 +88,33 @@
                         @item.EventMaxAttendance
                     </td>
                     <td>
-                        <a asp-page="UpdateEvent" asp-route-id="@item.EventId">Update</a> |
-                        <a asp-page="DeleteEvent" asp-route-id="@item.EventId">Delete</a>
+                        
+                        @{
+                            string email = HttpContext.Session.GetString("Email");
+                            Member emMember = _userLoginService.GetLoggedMember(email);
+                            List<Event> checkSum = await _eventService.GetEventsForMemberAsync(emMember.Id);
+                            if (checkSum.Exists(x => x.EventId == item.EventId))
+                            {
+                                <a asp-page-handler="LeaveEvent" asp-route-eventId="@item.EventId" class="btn btn-primary" style="font-size: medium">Leave Event</a>
+                            }
+                            else
+                            {
+                                <a asp-page-handler="JoinEvent" asp-route-eventId="@item.EventId" class="btn btn-primary" style="font-size: medium">Join Event</a>
+                            }
+                        } |
+
+
+                        @*@{
+                            List<Tuple<int, int>> eventMembers = await _eventService.GetEventMemberFromIdAsync(item.EventId, emMember.Id);
+                            Tuple<int, int> currentEM = eventMembers.Find(x => x.Item2 == emMember.Id);
+                            if (currentEM.Item2 == emMember.Id || emMember.Admin)
+                            {
+                                <a asp-page="UpdateEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Update</a>
+                                <a asp-page="DeleteEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Delete</a>
+                            }                            
+                        }   *@
+                        <a asp-page="UpdateEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Update</a> |
+                        <a asp-page="DeleteEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Delete</a>
                     </td>
                 </tr>
             }

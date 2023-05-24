@@ -2,20 +2,25 @@ using JordnærCase2023.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using JordnærCase2023.Models;
+using JordnærCase2023.Services;
+using Microsoft.Extensions.Logging;
 
 namespace JordnærCase2023.Pages.Events
 {
     public class GetAllEventsModel : PageModel
     {
         private IEventService _eventService;
+        private IUserLoginService _userLoginService;
         [BindProperty(SupportsGet = true)]
         public string FilterCriteria { get; set; }
         [BindProperty(SupportsGet = true)]
         public string Sort { get; set; }
         public List<Event> Events { get; set; }
-        public GetAllEventsModel(IEventService eventService)
+        public string Email { get; set; }
+        public GetAllEventsModel(IEventService eventService, IUserLoginService userLoginService)
         {
             _eventService = eventService;
+            _userLoginService = userLoginService;
         }
         public async Task<IActionResult> OnGetAsync(/*string dateSort*/)
         {
@@ -60,6 +65,24 @@ namespace JordnærCase2023.Pages.Events
             }
 
 
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetJoinEvent(int eventId) {
+            Email = HttpContext.Session.GetString("Email");
+            int emMemberId = _userLoginService.GetLoggedMember(Email).Id;
+            //int emEventId = _eventService.GetAllEventsAsync().Result.LastOrDefault().EventId;
+            await _eventService.CreateEMConnectionAsync(emMemberId, eventId);
+            Events = await _eventService.GetAllEventsAsync();
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetLeaveEvent(int eventId) {
+            Email = HttpContext.Session.GetString("Email");
+            int emMemberId = _userLoginService.GetLoggedMember(Email).Id;
+            //int emEventId = _eventService.GetAllEventsAsync().Result.LastOrDefault().EventId;
+            await _eventService.DeleteEMAsync(eventId, emMemberId);
+            Events = await _eventService.GetAllEventsAsync();
             return Page();
         }
     }
