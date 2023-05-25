@@ -47,8 +47,8 @@
                         @item.MemberID
                     </td>
                     <td>
-                        @item.ShiftType |
-                        @shiftTypeService.GetShiftTypeById(item.ShiftType)
+                        @item.ShiftType
+@*                        @shiftTypeService.GetShiftTypeById(item.ShiftType)*@
                     </td>
                     <td>
                         @item.DateFrom
@@ -57,6 +57,7 @@
                         @item.DateTo
                     </td>
                     <td>
+                        <a asp-page="JoinShift" asp-route-shiftId="@item.ShiftID">Join Shift</a> |
                         <a asp-page="UpdateShift" asp-route-shiftId="@item.ShiftID">Update</a> |
                         <a asp-page="DeleteShift" asp-route-shiftId="@item.ShiftID">Delete</a>
                     </td>
