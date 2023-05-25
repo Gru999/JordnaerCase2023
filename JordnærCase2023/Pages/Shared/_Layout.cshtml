@@ -34,11 +34,8 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Events/GetAllEvents">Events</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
-                        </li>
-                        @*@{
+                        </li>                   
+                        @{
                             string email = httpContext.HttpContext.Session.GetString("Email");
                             if (email != null) {
                                 <li class="nav-item">
@@ -52,7 +49,7 @@
                                     <a asp-page="/Login" class="float-right btn btn-primary" style="font-size: medium">Log In</a>
                                 </li>
                             }
-                        }*@
+                        }
                     </ul>
                 </div>
             </div>

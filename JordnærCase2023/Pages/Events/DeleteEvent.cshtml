@@ -9,8 +9,8 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.Event.EventId" />*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.Event.EventId" hidden/>
             <div class="form-group">
                 <label asp-for="@Model.Event.EventId" class="control-label"></label>
                 <input asp-for="@Model.Event.EventId" class="form-control" readonly />
