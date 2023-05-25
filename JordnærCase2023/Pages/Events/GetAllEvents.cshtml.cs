@@ -24,12 +24,14 @@ namespace JordnærCase2023.Pages.Events
         }
         public async Task<IActionResult> OnGetAsync(/*string dateSort*/)
         {
+            //Login Check
             string email = HttpContext.Session.GetString("Email");
             if (String.IsNullOrEmpty(email))
             {
                 return RedirectToPage("/Login");
             }
 
+            //Filter
             if (!String.IsNullOrEmpty(FilterCriteria)) {
                 Events = await _eventService.GetEventsByNameAsync(FilterCriteria);
             } else {
@@ -37,7 +39,7 @@ namespace JordnærCase2023.Pages.Events
             }
 
 
-
+            //Sortering - Not done
             if (Sort == "UEvent")
             {
                 DateTime closestDate = Events.OrderBy(x => x.EventDateFrom).First().EventDateFrom;
@@ -71,7 +73,6 @@ namespace JordnærCase2023.Pages.Events
         public async Task<IActionResult> OnGetJoinEvent(int eventId) {
             Email = HttpContext.Session.GetString("Email");
             int emMemberId = _userLoginService.GetLoggedMember(Email).Id;
-            //int emEventId = _eventService.GetAllEventsAsync().Result.LastOrDefault().EventId;
             await _eventService.CreateEMConnectionAsync(emMemberId, eventId);
             Events = await _eventService.GetAllEventsAsync();
             return Page();
@@ -80,7 +81,6 @@ namespace JordnærCase2023.Pages.Events
         public async Task<IActionResult> OnGetLeaveEvent(int eventId) {
             Email = HttpContext.Session.GetString("Email");
             int emMemberId = _userLoginService.GetLoggedMember(Email).Id;
-            //int emEventId = _eventService.GetAllEventsAsync().Result.LastOrDefault().EventId;
             await _eventService.DeleteEMAsync(eventId, emMemberId);
             Events = await _eventService.GetAllEventsAsync();
             return Page();

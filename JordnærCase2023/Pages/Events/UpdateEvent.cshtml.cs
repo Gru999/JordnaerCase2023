@@ -10,12 +10,19 @@ namespace JordnærCase2023.Pages.Events
         private IEventService _eventService;
         [BindProperty]
         public Event Event { get; set; }
+        public string Email { get; set; }
 
         public UpdateEventModel(IEventService eventService) {
             _eventService = eventService;
         }
-        public async Task OnGetAsync(int id) {
+        public async Task<IActionResult> OnGetAsync(int id) {
+            Email = HttpContext.Session.GetString("Email");
+            if (String.IsNullOrEmpty(Email))
+            {
+                return RedirectToPage("/Login");
+            }
             Event = await _eventService.GetEventFromIdAsync(id);
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync() {
