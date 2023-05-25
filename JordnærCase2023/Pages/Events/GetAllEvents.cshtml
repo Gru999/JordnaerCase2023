@@ -104,15 +104,15 @@
                         } |
 
 
-                        @*@{
-                            List<Tuple<int, int>> eventMembers = await _eventService.GetEventMemberFromIdAsync(item.EventId, emMember.Id);
-                            Tuple<int, int> currentEM = eventMembers.Find(x => x.Item2 == emMember.Id);
-                            if (currentEM.Item2 == emMember.Id || emMember.Admin)
+                        @{
+                            //List<Tuple<int, int>> eventMembers = await _eventService.GetEventMemberFromIdAsync(item.EventId, emMember.Id);
+                            //Tuple<int, int> currentEM = eventMembers.Find(x => x.Item2 == emMember.Id);
+                            if (checkSum.Exists(x => x.EventId == item.EventId) || emMember.Admin)
                             {
                                 <a asp-page="UpdateEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Update</a>
                                 <a asp-page="DeleteEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Delete</a>
                             }                            
-                        }   *@
+                        }   
                         <a asp-page="UpdateEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Update</a> |
                         <a asp-page="DeleteEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Delete</a>
                     </td>
