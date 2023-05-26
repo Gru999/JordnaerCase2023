@@ -16,17 +16,6 @@
 
         }
 
-        public Member(int id, string name, int phone, string email, string password, bool sanitationcourse, bool admin)
-        {
-            Id = id;
-            Name = name;
-            Phone = phone;
-            Email = email;
-            Password = password;
-            SanitationCourse = sanitationcourse;
-            Admin = admin;
-        }
-
         public Member(int id, string name, string? image, int phone, string email, string password, bool sanitationcourse, bool admin)
         {
             Id = id;

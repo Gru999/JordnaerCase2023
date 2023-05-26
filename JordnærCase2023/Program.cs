@@ -11,6 +11,7 @@ builder.Services.AddTransient<IShiftTypeService, ShiftTypeService>();
 builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddTransient<IMemberService, MemberService>();
 builder.Services.AddTransient<IUserLoginService, UserLoginService>();
+builder.Services.AddTransient<IShiftTypeMemberService, ShiftTypeMemberService>();
 
 // For user login
 builder.Services.AddSession();

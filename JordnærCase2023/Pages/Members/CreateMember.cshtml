@@ -7,9 +7,10 @@
 <h1>Opret nyt medlem</h1>
 
 
-<div class="col-md-4">
-    <form method="post" enctype="multipart/form-data">
 
+    <form method="post" enctype="multipart/form-data">
+    <div style="display:flex; gap:15px; margin-bottom: 10px;">
+        <div class="col-md-4">
         <div class="form-group">
             <label asp-for="@Model.newMember.Name" class="control-label">Navn</label>
             <input asp-for="@Model.newMember.Name" class="form-control" required />
@@ -43,25 +44,47 @@
             }
         </div>
 
-        <div class="form-group">
-            <label asp-for="@Model.Photo" class="control-label">Billede</label>
-            <div class="custom-file">
-                <input asp-for="@Model.Photo" class="custom-file-input form-control" />
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="@Model.Photo" class="control-label">Billede</label>
+                <div class="custom-file">
+                    <input asp-for="@Model.Photo" class="custom-file-input form-control" />
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label asp-for="@Model.MemberShiftTypes" class="control-label">Vagttyper</label>
+                <p style="font-size:0.8rem; opacity:80%; margin-bottom:5px;">Vælg alle ønskede vagttyper.</p>
+                <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                    @for (int i = 0; i < Model.MemberShiftTypes.Count; i++)
+                    {
+                        <div style="display:flex; padding:5px 7px; outline:1px solid grey; gap:5px; border-radius:5px;">
+                            <p style="margin-bottom:0px;">@Model.MemberShiftTypes[i].Name</p>
+                            <input asp-for="@Model.MemberShiftTypes[i].Id" class="form-control" hidden>
+                            <input asp-for="@Model.MemberShiftTypes[i].Name" class="form-control" hidden>
+                            <input type="checkbox" asp-for="@Model.MemberShiftTypes[i].Valid" value="true" />
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <p style="margin-bottom:0px;">Diverse</p>
+            <div style="display:flex; flex-wrap:wrap; gap: 5px;">
+                <div class="form-group" style="display:flex; padding:5px 7px; outline:1px solid grey; gap:5px; border-radius:5px;">
+                    <label asp-for="@Model.newMember.SanitationCourse" class="control-label">Hygiejne kursus</label>
+                    <input type="checkbox" asp-for="@Model.newMember.SanitationCourse" value="true" />
+                </div>
+
+                <div class="form-group" style="display:flex; padding:5px 7px; outline:1px solid grey; gap:5px; border-radius:5px;">
+                    <label asp-for="@Model.newMember.Admin" class="control-label">Adminstrator</label>
+                    <input type="checkbox" asp-for="@Model.newMember.Admin" value="true" />
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <label asp-for="@Model.newMember.SanitationCourse" class="control-label">Hygiejne kursus</label>
-            <input type="checkbox" asp-for="@Model.newMember.SanitationCourse" value="true"/>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="@Model.newMember.Admin" class="control-label">Adminstrator</label>
-            <input type="checkbox" asp-for="@Model.newMember.Admin" value="true" />
-        </div>
-
-        <div class="form-group">
-            <input type="submit" value="Opret medlem" class="btn btn-primary"/>
-        </div>
+    </div>
+    <div class="form-group">
+        <a asp-page="AllMembers" class="btn btn-outline-dark">Tilbage</a>
+        <input type="submit" value="Opret medlem" class="btn btn-primary" />
+    </div>
     </form>
-</div>

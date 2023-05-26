@@ -17,6 +17,7 @@ namespace JordnærCase2023.Services
         private string deleteSql = "delete from Member where Member_ID = @ID";
         private string queryStringFromName = "select * from Member where Member_Name like @Name";
         private string queryStringFromId = "select * from Member where Member_ID = @ID";
+        private string queryStringNewest = "select top 1 * from Member order by Member_ID DESC";
 
         public MemberService(IConfiguration configuration) : base(configuration)
         {
@@ -218,15 +219,7 @@ namespace JordnærCase2023.Services
                         string memberPassword = reader.GetString(5);
                         bool memberSanitationCourse = reader.GetBoolean(6);
                         bool memberAdmin = reader.GetBoolean(7);
-                        Member member;
-                        if (memberImg == null)
-                        {
-                            member = new Member(memberID, name, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
-                        }
-                        else
-                        {
-                            member = new Member(memberID, name, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
-                        }
+                        Member member = new Member(memberID, name, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
                         members.Add(member);
                     }
                 }
@@ -269,6 +262,46 @@ namespace JordnærCase2023.Services
                         bool memberSanitationCourse = reader.GetBoolean(6);
                         bool memberAdmin = reader.GetBoolean(7);
                         member = new Member(memberID, name, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
+                    }
+                }
+                catch (SqlException sqlEx)
+                {
+                    Console.WriteLine("Database error " + sqlEx.Message);
+                }
+                catch (Exception exp)
+                {
+                    Console.WriteLine("Generel fejl" + exp.Message);
+                }
+                return member;
+            }
+            return null;
+        }
+
+        public async Task<Member> GetNewestMember()
+        {
+            Member member = new Member();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(queryStringNewest, connection);
+                    await command.Connection.OpenAsync();
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        int memberId = reader.GetInt32(0);
+                        string name = reader.GetString(1);
+                        string? memberImg = null;
+                        if (!reader.IsDBNull(2))
+                        {
+                            memberImg = reader.GetString(2);
+                        }
+                        int memberPhone = reader.GetInt32(3);
+                        string memberEmail = reader.GetString(4);
+                        string memberPassword = reader.GetString(5);
+                        bool memberSanitationCourse = reader.GetBoolean(6);
+                        bool memberAdmin = reader.GetBoolean(7);
+                        member = new Member(memberId, name, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
                     }
                 }
                 catch (SqlException sqlEx)

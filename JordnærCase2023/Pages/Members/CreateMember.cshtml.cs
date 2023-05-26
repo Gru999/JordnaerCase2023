@@ -20,18 +20,26 @@ namespace JordnærCase2023.Pages.Members
         [BindProperty]
         public string PasswordMatch { get; set; }
 
+        [BindProperty]
+        public List<ShiftType> MemberShiftTypes { get; set; }
+
         public IMemberService mService;
+        private IShiftTypeService stService;
+        private IShiftTypeMemberService stmService;
         private IWebHostEnvironment webHostEnvironment;
 
 
-        public CreateMemberModel(IMemberService mService, IWebHostEnvironment webHostEnvironment)
+        public CreateMemberModel(IMemberService mService, IShiftTypeService stService, IShiftTypeMemberService stmService, IWebHostEnvironment webHostEnvironment)
         {
             this.mService = mService;
+            this.stService = stService;
+            this.stmService = stmService;
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        public void OnGet()
+        public async void OnGet()
         {
+            MemberShiftTypes = stService.GetAllShiftTypes();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -100,6 +108,16 @@ namespace JordnærCase2023.Pages.Members
                 }
 
                 await mService.CreateMemberAsync(newMember);
+                
+                newMember = await mService.GetNewestMember();
+                foreach (var item in MemberShiftTypes)
+                {
+                    if (item.Valid == true)
+                    {
+                        await stmService.CreateShiftTypeMember(newMember.Id, item.Id);
+                    }
+                }
+
                 return RedirectToPage("AllMembers");
 
             }

@@ -10,5 +10,6 @@ namespace JordnærCase2023.Interfaces
         Task<bool> DeleteMemberAsync(int memberID);
         Task<List<Member>> GetMembersByName(string memberName);
         Task<Member> GetMemberByID(int memberID);
+        Task<Member> GetNewestMember();
     }
 }

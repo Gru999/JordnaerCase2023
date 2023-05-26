@@ -11,6 +11,8 @@ namespace JordnærCase2023.Pages.Members
         public string MatchingPasswordMessage { get; set; }
         public string UniqueEmailMessage { get; set; }
         private IMemberService mService;
+        private IShiftTypeService stService;
+        private IShiftTypeMemberService stmService;
         private IWebHostEnvironment webHostEnvironment;
 
         [BindProperty]
@@ -22,22 +24,54 @@ namespace JordnærCase2023.Pages.Members
         public Member OldUser { get; set; }
 
         [BindProperty]
+        public List<ShiftType> ShiftTypes { get; set; }
+
+        [BindProperty]
+        public List<int> MemberShiftTypes { get; set; }
+
+        [BindProperty]
         public string PasswordMatch { get; set; }
 
-        public UpdateMemberModel(IMemberService memberService, IWebHostEnvironment webHostEnvironment)
+        public UpdateMemberModel(IMemberService memberService, IWebHostEnvironment webHostEnvironment, IShiftTypeService stService, IShiftTypeMemberService stmService)
         {
             mService = memberService;
             this.webHostEnvironment = webHostEnvironment;
+            this.stService = stService;
+            this.stmService = stmService;
         }
 
         public async Task OnGetAsync(int memberId)
         {
             MemberToUpdate = await mService.GetMemberByID(memberId);
+            ShiftTypes = stService.GetAllShiftTypes();
+            MemberShiftTypes = await stmService.MemberShiftTypes(memberId);
+
+            foreach(var item in ShiftTypes)
+            {
+                item.Valid = false;
+            }
+
+            if(MemberShiftTypes.Count > 0)
+            {
+                for (int i = 0; i < ShiftTypes.Count; i++)
+                {
+                    foreach (int item in MemberShiftTypes)
+                    {
+                        if (item == ShiftTypes[i].Id)
+                        {
+                            ShiftTypes[i].Valid = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             OldUser = await mService.GetMemberByID(MemberToUpdate.Id);
+            MemberShiftTypes = await stmService.MemberShiftTypes(MemberToUpdate.Id);
 
             List<Member> AllMembers = await mService.GetAllMembersAsync();
 
@@ -106,6 +140,40 @@ namespace JordnærCase2023.Pages.Members
                     }
 
                     MemberToUpdate.Image = ProcessUploadedFile();
+                }
+
+                foreach(var shiftType in ShiftTypes)
+                {
+
+                    if(shiftType.Valid == true)
+                    {
+                        int i = 0;
+
+                        foreach (var existingShiftType in MemberShiftTypes)
+                        {
+                            if(existingShiftType == shiftType.Id)
+                            {
+                                i++;
+                            }
+                        }
+
+                        if(i == 0)
+                        {
+                            await stmService.CreateShiftTypeMember(MemberToUpdate.Id, shiftType.Id);
+                        }
+                    }
+
+                    if(shiftType.Valid == false)
+                    {
+                        foreach(var existingShiftType in MemberShiftTypes)
+                        {
+                            if(existingShiftType == shiftType.Id)
+                            {
+                                await stmService.DeleteShiftTypeMember(MemberToUpdate.Id, shiftType.Id);
+                                break;
+                            }
+                        }
+                    }
                 }
 
                 await mService.UpdateMemberAsync(MemberToUpdate);
