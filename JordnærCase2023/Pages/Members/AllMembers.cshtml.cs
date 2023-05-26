@@ -25,6 +25,8 @@ namespace JordnærCase2023.Pages.Members
             {
                 Members = await mService.GetAllMembersAsync();
             }
+
+            Members = Members.OrderBy(x => x.Name).ToList();
         }
     }
 }

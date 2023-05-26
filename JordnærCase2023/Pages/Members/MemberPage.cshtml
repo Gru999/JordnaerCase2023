@@ -5,7 +5,7 @@
 }
 
 <div>
-    <div style="display:flex">
+    <div style="display:flex; gap: 10px;">
         <div>
             <img src="~/Images/Members/@Model.Member.Image" class="rounded-circle" width="150" height="150" />
         </div>
@@ -15,26 +15,41 @@
             <h6>@Model.Member.Phone</h6>
 
 
-            @*
-                <div style="display:flex">
-                    foreach(VagtType item in VagtTyper)
+            <h4>Vagttyper</h4>
+                <div style="display:flex; gap: 5px;">
+                    @if(Model.shiftTypes.Count > 0)
                     {
-                        <div style="display:flex">
-                            <div style="background-color:tomato; height:10px; min-width:10px; border-radius:50%"></div>
-                            <div>@item.Name</div>
-                        </div>
+                        @foreach (var item in Model.shiftTypes)
+                        {
+                            <div style="display:flex; gap: 10px; padding:5px 7px; border-radius: 10px; border: 1px solid grey; align-items: center;">
+                                <div style="background-color:blue; height:10px; min-width:10px; border-radius:50%;"></div>
+                                <div>@item.Name</div>
+                            </div>
+                        }
                     }
+                    else
+                    {
+                        <p>Der er ingen tilmeldte vagttyper</p>
+                    }
+                    
                 </div>
-            *@
+            
 
+        </div>
+        <div style="margin-left:auto;">
+            <div style="padding-bottom:5px;">
+                <a asp-page="AllMembers" class="btn btn-outline-dark">Tilbage</a>
+                <a asp-page="UpdateMember" class="btn btn-primary" asp-route-memberId="@Model.Member.Id">Opdater medlem</a>
+            </div>
+            <a asp-page="DeleteMember" class="btn btn-primary btn-danger" style="float:right;" asp-route-memberId="@Model.Member.Id">Slet medlem</a>
         </div>
     </div>
 
     <table class="table">
-        <h3>Vagter</h3>
+        <h4>Vagter</h4>
         @if(Model.MemberShifts.Count == 0)
         {
-            <h6>Der er ingen tilmeldte vagter.</h6>
+            <p>Der er ingen tilmeldte vagter.</p>
         }
         else
         {

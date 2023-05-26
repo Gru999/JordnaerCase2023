@@ -14,21 +14,31 @@ namespace JordnærCase2023.Pages.Members
         public IShiftService shiftService;
         public IShiftTypeService stService;
         public IShiftTypeMemberService stmService;
+        public IUserLoginService logService;
         public List<int> shiftTypeIds = new List<int>();
         public List<ShiftType> shiftTypes = new List<ShiftType>();
 
-        public MemberPageModel(IMemberService memberService, IShiftService shiftService, IShiftTypeService stService, IShiftTypeMemberService stmService)
+        public MemberPageModel(IMemberService memberService, IShiftService shiftService, IShiftTypeService stService, IShiftTypeMemberService stmService, IUserLoginService logService)
         {
             this.memberService = memberService;
             this.shiftService = shiftService;
             this.stService = stService;
             this.stmService = stmService;
+            this.logService = logService;
         }
 
 
-        public async Task OnGetAsync(int memberId)
+        public async Task OnGetAsync(int memberId, string memberEmail)
         {
-            Member = await memberService.GetMemberByID(memberId);
+            if(memberEmail != null)
+            {
+                Member = logService.GetLoggedMember(memberEmail);
+            }
+            else
+            {
+                Member = await memberService.GetMemberByID(memberId);
+            }
+
             MemberShifts = await shiftService.ShiftsByMember(memberId);
             shiftTypeIds = await stmService.MemberShiftTypes(memberId);
             foreach(int id in shiftTypeIds)

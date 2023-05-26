@@ -8,11 +8,13 @@ namespace JordnærCase2023.Pages.Members
     public class DeleteMemberModel : PageModel
     {
         private IMemberService mService;
+        private IShiftTypeMemberService stmService;
         [BindProperty]
         public Member MemberToDelete { get; set; }
-        public DeleteMemberModel(IMemberService memberService)
+        public DeleteMemberModel(IMemberService memberService, IShiftTypeMemberService stmService)
         {
             mService = memberService;
+            this.stmService = stmService;
         }
 
         public async Task OnGetAsync(int memberId)
@@ -22,6 +24,11 @@ namespace JordnærCase2023.Pages.Members
         
         public async Task<IActionResult> OnPostAsync(int memberId)
         {
+            List<int> ShiftTypes = await stmService.MemberShiftTypes(memberId);
+            foreach(int ShiftType in ShiftTypes)
+            {
+                await stmService.DeleteShiftTypeMember(memberId, ShiftType);
+            }
             await mService.DeleteMemberAsync(memberId);
             return RedirectToPage("AllMembers");
         }

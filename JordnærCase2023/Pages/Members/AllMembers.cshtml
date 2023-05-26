@@ -28,7 +28,7 @@
     @if(Model.Members.Count > 0){
         @foreach (var item in Model.Members)
         {
-            <tr>
+            <tr style="vertical-align:middle;">
                 <td><img src="~/Images/Members/@item.Image" class="rounded-circle" height="75" width="75"/></td>
                 <td>@item.Id</td>
                 <td>
