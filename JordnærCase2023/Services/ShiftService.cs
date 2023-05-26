@@ -14,6 +14,7 @@ namespace JordnærCase2023.Services
         private string deleteSql = "delete from JShift where Shift_ID = @ShiftId";
         private string getAllShiftsSql = "select * from JShift";
         private string getShiftsByIdSql = "select * from JShift where Shift_ID = @ShiftId";
+        private string getShiftsByMember = "select * from JShift where Member_ID = @MemberId";
 
         public ShiftService(IConfiguration configuration) : base(configuration)
         {
@@ -184,6 +185,40 @@ namespace JordnærCase2023.Services
                 }
             }
             return null;
+        }
+
+        public async Task<List<Shift>> ShiftsByMember(int id)
+        {
+            List<Shift> MemberShifts = new List<Shift>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(getShiftsByMember, connection))
+                {
+                    command.Parameters.AddWithValue("@MemberID", id);
+                    try
+                    {
+                        await command.Connection.OpenAsync();
+                        SqlDataReader reader = await command.ExecuteReaderAsync();
+                        while (await reader.ReadAsync())
+                        {
+                            int shiftId = reader.GetInt32(0);
+                            int memberId = reader.GetInt32(1);
+                            int shiftTypeId = reader.GetInt32(2);
+                            DateTime dateFrom = reader.GetDateTime(3);
+                            DateTime dateTo = reader.GetDateTime(4);
+                            Shift shift;
+                                shift = new Shift(shiftId, memberId, shiftTypeId, dateFrom, dateTo);
+                            MemberShifts.Add(shift);
+                        }
+                    }
+                    catch (SqlException sqlEx)
+                    {
+                        Console.WriteLine("Database Error: " + sqlEx.Message);
+                    }
+                }
+
+            }
+            return MemberShifts;
         }
     }
 }

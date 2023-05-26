@@ -6,13 +6,8 @@
 
 <h1>Rediger medlem?</h1>
 
-<div>
+<div class="col-md-4">
     <form method="post" enctype="multipart/form-data">
-
-        @if (Model.Message != null)
-        {
-                <p class="text-danger">@Model.Message</p>
-        }
 
         <div class="form-group">
             <label asp-for="@Model.MemberToUpdate.Id" class="control-label" hidden></label>
@@ -26,12 +21,16 @@
 
         <div class="form-group">
             <label asp-for="@Model.MemberToUpdate.Phone" class="control-label">Tlf.</label>
-            <input asp-for="@Model.MemberToUpdate.Phone" class="form-control" placeholder="..." />
+            <input asp-for="@Model.MemberToUpdate.Phone" class="form-control" />
         </div>
 
         <div class="form-group">
             <label asp-for="@Model.MemberToUpdate.Email" class="control-label">E-mail</label>
-            <input asp-for="@Model.MemberToUpdate.Email" class="form-control" placeholder="..." />
+            <input type="email" asp-for="@Model.MemberToUpdate.Email" class="form-control" />
+            @if (Model.UniqueEmailMessage != null)
+            {
+                <p class="text-danger" style="font-size:0.8rem; margin-bottom: 0px;">@Model.UniqueEmailMessage</p>
+            }
         </div>
 
         <div class="form-group">
@@ -44,6 +43,10 @@
        <div class="form-group">
             <label asp-for="@Model.MemberToUpdate.Password" class="control-label">Kodeord</label>
             <input type="password" asp-for="@Model.MemberToUpdate.Password" class="form-control" />
+            @if (Model.MatchingPasswordMessage != null)
+            {
+                <p class="text-danger" style="font-size:0.8rem; margin-bottom: 0px;">@Model.MatchingPasswordMessage</p>
+            }
         </div>
 
         <div class="form-group">

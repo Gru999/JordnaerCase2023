@@ -7,37 +7,40 @@
 <h1>Opret nyt medlem</h1>
 
 
-<div>
+<div class="col-md-4">
     <form method="post" enctype="multipart/form-data">
-
-        @if (Model.Message != null)
-        {
-            <p class="text-danger">@Model.Message</p>
-        }
 
         <div class="form-group">
             <label asp-for="@Model.newMember.Name" class="control-label">Navn</label>
-            <input asp-for="@Model.newMember.Name" class="form-control" />
+            <input asp-for="@Model.newMember.Name" class="form-control" required />
         </div>
 
         <div class="form-group">
             <label asp-for="@Model.newMember.Phone" class="control-label">Tlf.</label>
-            <input asp-for="@Model.newMember.Phone" class="form-control" />
+            <input asp-for="@Model.newMember.Phone" class="form-control" required />
         </div>
 
         <div class="form-group">
             <label asp-for="@Model.newMember.Email" class="control-label">E-mail</label>
-            <input asp-for="@Model.newMember.Email" class="form-control" />
+            <input asp-for="@Model.newMember.Email" class="form-control" required />
+            @if (Model.UniqueEmailMessage != null)
+            {
+                <p class="text-danger" style="font-size:0.8rem; margin-bottom:0px;">@Model.UniqueEmailMessage</p>
+            }
         </div>
 
         <div class="form-group">
             <label asp-for="@Model.newMember.Password" class="control-label">Kodeord</label>
-            <input type="password" asp-for="@Model.newMember.Password" class="form-control" />
+            <input type="password" asp-for="@Model.newMember.Password" class="form-control" required />
         </div>
 
         <div class="form-group">
             <label asp-for="@Model.PasswordMatch">Gentag kodeord</label>
-            <input type="password" asp-for="@Model.PasswordMatch" class="form-control" />
+            <input type="password" asp-for="@Model.PasswordMatch" class="form-control" required/>
+            @if (Model.MatchingPasswordMessage != null)
+            {
+                <p class="text-danger" style="font-size:0.8rem; margin-bottom:0px;">@Model.MatchingPasswordMessage</p>
+            }
         </div>
 
         <div class="form-group">

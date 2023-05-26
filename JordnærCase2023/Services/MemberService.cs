@@ -54,14 +54,7 @@ namespace JordnærCase2023.Services
                             bool memberSanitationCourse = reader.GetBoolean(6);
                             bool memberAdmin = reader.GetBoolean(7);
                             Member member;
-                            if (memberImg == null)
-                            {
-                                member = new Member(memberID, memberName, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
-                            }
-                            else
-                            {
                                 member = new Member(memberID, memberName, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
-                            }
                             members.Add(member);
                         }
                     }
@@ -252,7 +245,7 @@ namespace JordnærCase2023.Services
 
         public async Task<Member> GetMemberByID(int memberID)
         {
-            Member memberToDelete = new Member();
+            Member member = new Member();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
@@ -275,14 +268,7 @@ namespace JordnærCase2023.Services
                         string memberPassword = reader.GetString(5);
                         bool memberSanitationCourse = reader.GetBoolean(6);
                         bool memberAdmin = reader.GetBoolean(7);
-                        if (memberImg == null)
-                        {
-                            memberToDelete = new Member(memberID, name, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
-                        }
-                        else
-                        {
-                            memberToDelete = new Member(memberID, name, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
-                        }
+                        member = new Member(memberID, name, memberImg, memberPhone, memberEmail, memberPassword, memberSanitationCourse, memberAdmin);
                     }
                 }
                 catch (SqlException sqlEx)
@@ -293,7 +279,7 @@ namespace JordnærCase2023.Services
                 {
                     Console.WriteLine("Generel fejl" + exp.Message);
                 }
-                return memberToDelete;
+                return member;
             }
             return null;
         }

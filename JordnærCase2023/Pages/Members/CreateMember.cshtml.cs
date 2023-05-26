@@ -8,7 +8,8 @@ namespace JordnærCase2023.Pages.Members
 {
     public class CreateMemberModel : PageModel
     {
-        public string Message { get; set; }
+        public string UniqueEmailMessage { get; set; }
+        public string MatchingPasswordMessage { get; set; }
 
         [BindProperty]
         public Member newMember { get; set; }
@@ -35,12 +36,54 @@ namespace JordnærCase2023.Pages.Members
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if(PasswordMatch != newMember.Password)
+            List<Member> AllMembers = await mService.GetAllMembersAsync();
+
+            bool UniqueEmail()
             {
+                if(AllMembers.Count == 0)
+                {
+                    return true;
+                }
+                else
+                {
 
-                Message = "Passwords er ikke ens.";
+                    foreach (var member in AllMembers)
+                    {
+                        if (member.Email == newMember.Email)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+
+            bool DisplayError()
+            {
+                bool result = false;
+                if (PasswordMatch != newMember.Password)
+                {
+                    MatchingPasswordMessage = "Passwords er ikke ens.";
+                    result = true;
+
+                }
+                if (UniqueEmail() == false)
+                {
+                    UniqueEmailMessage = "Denne email er allerede registretet.";
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+                return result;
+            }
+
+
+
+            if (DisplayError() == true)
+            {
                 return Page();
-
             }
             else
             {

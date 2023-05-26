@@ -30,5 +30,53 @@
         </div>
     </div>
 
-    <div></div>
+    <table class="table">
+        <h3>Vagter</h3>
+        @if(Model.MemberShifts.Count == 0)
+        {
+            <h6>Der er ingen tilmeldte vagter.</h6>
+        }
+        else
+        {
+            <thead>
+            <th>
+                Shift_ID
+            </th>
+            <th>
+                Member_ID
+            </th>
+            <th>
+                Shift_Type
+            </th>
+            <th>
+                Date_From
+            </th>
+            <th>
+                Date_To
+            </th>
+            </thead>
+
+            foreach(var item in Model.MemberShifts)
+            {
+                <tr>
+                    <td>
+                        @item.ShiftID
+                    </td>
+                    <td>
+                        @item.MemberID
+                    </td>
+                    <td>
+                        @item.ShiftType
+                    </td>
+                    <td>
+                        @item.DateFrom
+                    </td>
+                    <td>
+                        @item.DateTo
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
 </div>

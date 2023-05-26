@@ -8,7 +8,8 @@ namespace JordnærCase2023.Pages.Members
 {
     public class UpdateMemberModel : PageModel
     {
-        public string Message { get; set; }
+        public string MatchingPasswordMessage { get; set; }
+        public string UniqueEmailMessage { get; set; }
         private IMemberService mService;
         private IWebHostEnvironment webHostEnvironment;
 
@@ -17,6 +18,8 @@ namespace JordnærCase2023.Pages.Members
 
         [BindProperty]
         public IFormFile Photo { get; set; }
+
+        public Member OldUser { get; set; }
 
         [BindProperty]
         public string PasswordMatch { get; set; }
@@ -34,19 +37,69 @@ namespace JordnærCase2023.Pages.Members
 
         public async Task<IActionResult> OnPostAsync()
         {
+            OldUser = await mService.GetMemberByID(MemberToUpdate.Id);
 
-            if (PasswordMatch != MemberToUpdate.Password)
+            List<Member> AllMembers = await mService.GetAllMembersAsync();
+
+            bool UniqueEmail()
             {
+                if (AllMembers.Count == 0)
+                {
+                    return true;
+                }
+                else
+                {
 
-                Message = "Passwords er ikke ens.";
+                    foreach (var member in AllMembers)
+                    {
+                        if (member.Email == MemberToUpdate.Email && MemberToUpdate.Email != OldUser.Email)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+
+            bool DisplayError()
+            {
+                bool result = false;
+                if (PasswordMatch != MemberToUpdate.Password)
+                {
+                    MatchingPasswordMessage = "Passwords er ikke ens.";
+                    result = true;
+
+                }
+                if (UniqueEmail() == false)
+                {
+                    UniqueEmailMessage = "Denne email er allerede registretet.";
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+                return result;
+            }
+
+
+            if (DisplayError() == true)
+            {
                 return Page();
-
             }
             else
             {
+                if (MemberToUpdate.Password == null)
+                {
+                    MemberToUpdate.Password = OldUser.Password;
+                }
+                if (MemberToUpdate.Image == null)
+                {
+                    MemberToUpdate.Image = OldUser.Image;
+                }
                 if (Photo != null)
                 {
-                    if (MemberToUpdate.Image != null)
+                    if (MemberToUpdate.Image != null && MemberToUpdate.Image != "basic_pfp.png" && OldUser.Image != null)
                     {
                         string filePath = Path.Combine(webHostEnvironment.WebRootPath, "/Images/Members", MemberToUpdate.Image);
                         System.IO.File.Delete(filePath);
