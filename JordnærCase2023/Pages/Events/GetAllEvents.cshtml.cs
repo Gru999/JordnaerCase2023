@@ -16,13 +16,14 @@ namespace JordnærCase2023.Pages.Events
         [BindProperty(SupportsGet = true)]
         public string Sort { get; set; }
         public List<Event> Events { get; set; }
+        public List<Tuple<int, int, int>> EMOwner { get; set; }
         public string Email { get; set; }
         public GetAllEventsModel(IEventService eventService, IUserLoginService userLoginService)
         {
             _eventService = eventService;
             _userLoginService = userLoginService;
         }
-        public async Task<IActionResult> OnGetAsync(/*string dateSort*/)
+        public async Task<IActionResult> OnGetAsync()
         {
             //Login Check
             string email = HttpContext.Session.GetString("Email");
@@ -38,35 +39,23 @@ namespace JordnærCase2023.Pages.Events
                 Events = await _eventService.GetAllEventsAsync();
             }
 
-
-            //Sortering - Not done
-            if (Sort == "UEvent")
-            {
-                DateTime closestDate = Events.OrderBy(x => x.EventDateFrom).First().EventDateFrom;
-                foreach (var ev in Events)
+            //Admin assigning check
+            Email = HttpContext.Session.GetString("Email");
+            int emMemberId = _userLoginService.GetLoggedMember(Email).Id;
+            EMOwner = await _eventService.GetAllEventMemberAsync();
+            Events = await _eventService.GetAllEventsAsync();
+            Random random = new Random();
+            List<Member> members = await _userLoginService.GetAllUsers();
+            Member randAdmin = members.Where(m => m.Admin).OrderBy(x => random.Next()).FirstOrDefault();
+            bool idMatch = EMOwner.Any(x => !Events.Any(e => e.EventId == x.Item3));
+            int difId = Events.FirstOrDefault(e => !EMOwner.Any(x => x.Item3 == e.EventId))?.EventId ?? 0;
+            if (difId != 0) {
+                if (!idMatch)
                 {
-                    DateTime tempDate = ev.EventDateFrom;
-                    if (tempDate > DateTime.Now && tempDate < closestDate)
-                    {
-                        closestDate = tempDate;
-                    }
+                    await _eventService.CreateEMConnectionAsync(randAdmin.Id, difId);
+                    return RedirectToPage("/index");
                 }
-                Events = Events.Where(x => x.EventDateFrom == closestDate).ToList();
-            }
-            else if (Sort == "JoinedsEvent")
-            {
-                Events = Events.OrderBy(x => x.EventDateFrom).ToList();
-            }
-            //else if (DateSort == "OEvent")
-            //{
-            //    Events = Events.OrderByDescending(x => x.EventDateFrom).ToList();
-            //}
-            else
-            {
-                Events = await _eventService.GetAllEventsAsync();
-            }
-
-
+            }                  
             return Page();
         }
 
@@ -81,7 +70,7 @@ namespace JordnærCase2023.Pages.Events
         public async Task<IActionResult> OnGetLeaveEvent(int eventId) {
             Email = HttpContext.Session.GetString("Email");
             int emMemberId = _userLoginService.GetLoggedMember(Email).Id;
-            await _eventService.DeleteEMAsync(eventId, emMemberId);
+            await _eventService.DeleteEMAsync(emMemberId, eventId);
             Events = await _eventService.GetAllEventsAsync();
             return Page();
         }

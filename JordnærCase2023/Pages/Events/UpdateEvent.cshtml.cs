@@ -26,7 +26,6 @@ namespace JordnærCase2023.Pages.Events
         }
 
         public async Task<IActionResult> OnPostAsync() {
-            //Id could have been bound like in DeleteEvent
             await _eventService.UpdateEventAsync(Event);
             return RedirectToPage("GetAllEvents");
         }

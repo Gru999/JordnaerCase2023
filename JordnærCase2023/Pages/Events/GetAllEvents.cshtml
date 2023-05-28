@@ -17,19 +17,6 @@
 </form>
 <p></p>
 
-<form method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label asp-for="@Model.Events" class="control-label"></label>
-        <select name="Sort" class="form-control">
-            <option value="">Sort Events</option>
-            <option value="UEvent">Upcoming Events</option>
-            <option value="JoinedEvents">Joined Events</option>
-            <option value="OEvent">Old Events</option>
-        </select>
-        <input type="submit" value="Sort" class="btn btn-primary" />
-    </div>
-</form>
-
 <p>
     <a asp-page="CreateEvent" class="btn btn-primary" style="font-size: medium">Create Event</a>
 </p>
@@ -85,14 +72,24 @@
                         <img src="~/images/@item.EventImg" width="60" height="60" />
                     </td>
                     <td>
-                        @item.EventMaxAttendance
+                        @{
+                            List<Tuple<int, int, int>> ownerSum = await _eventService.GetAllEventMemberAsync();
+                            int attCount = ownerSum.Count(x => x.Item3 == item.EventId);
+                            if (attCount >= item.EventMaxAttendance)
+                            {
+                                <span class="text-danger">Event Full</span>
+                            } else
+                            {
+                                <span>Open Spots @(item.EventMaxAttendance - attCount)</span>
+                                    
+                            }
+                        }
                     </td>
-                    <td>
-                        
+                    <td>                        
                         @{
                             string email = HttpContext.Session.GetString("Email");
                             Member emMember = _userLoginService.GetLoggedMember(email);
-                            List<Event> checkSum = await _eventService.GetEventsForMemberAsync(emMember.Id);
+                            List<Event> checkSum = await _eventService.GetEventsForMemberAsync(emMember.Id);                            
                             if (checkSum.Exists(x => x.EventId == item.EventId))
                             {
                                 <a asp-page-handler="LeaveEvent" asp-route-eventId="@item.EventId" class="btn btn-primary" style="font-size: medium">Leave Event</a>
@@ -100,15 +97,14 @@
                             else
                             {
                                 <a asp-page-handler="JoinEvent" asp-route-eventId="@item.EventId" class="btn btn-primary" style="font-size: medium">Join Event</a>
-                            }
-                        } |
-                        @{                            
-                            if (checkSum.Exists(x => x.EventId == item.EventId) || emMember.Admin)
+                            }                           
+                            var ownerCheck = ownerSum.OrderBy(x => x.Item3).GroupBy(x => x.Item3).ToDictionary(g => g.Key, g => g.First().Item2);
+                            if (ownerCheck.TryGetValue(item.EventId, out var firstId) && (firstId == emMember.Id) || emMember.Admin)
                             {
-                                <a asp-page="UpdateEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Update</a>
-                                <a asp-page="DeleteEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Delete</a>
-                            }                            
-                        }   
+                                    <a asp-page="UpdateEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Update</a>
+                                    <a asp-page="DeleteEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Delete</a>
+                            }
+                        }
                     </td>
                 </tr>
             }

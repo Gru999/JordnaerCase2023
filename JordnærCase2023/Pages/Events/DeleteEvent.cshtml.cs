@@ -12,6 +12,7 @@ namespace JordnærCase2023.Pages.Events
         private IUserLoginService userLoginService;
         [BindProperty]
         public Event Event { get; set; }
+        public List<Tuple<int, int, int>> EM { get; set; }
         public string Email { get; set; }
         public DeleteEventModel(IEventService eventService, IUserLoginService userLoginService)
         {
@@ -31,8 +32,17 @@ namespace JordnærCase2023.Pages.Events
 
         public async Task<IActionResult> OnPostAsync() {
             Email = HttpContext.Session.GetString("Email");
-            int emMemberId = userLoginService.GetLoggedMember(Email).Id;
-            await _eventService.DeleteEMAsync(Event.EventId, emMemberId);
+            Member emMember = userLoginService.GetLoggedMember(Email);
+            EM = await _eventService.GetAllEventMemberAsync();
+            
+            //Code here
+            if (emMember.Admin) {
+                await _eventService.DeleteEMOwnerAdminAsync(Event.EventId);
+                await _eventService.DeleteEventAsync(Event.EventId);
+            }
+
+
+            await _eventService.DeleteEMAsync(emMember.Id, Event.EventId);
             await _eventService.DeleteEventAsync(Event.EventId);
             return RedirectToPage("GetAllEvents");
         }
