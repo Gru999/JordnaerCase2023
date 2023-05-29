@@ -44,7 +44,7 @@ namespace JordnærCase2023.Pages.Members
             }
 
             MemberShifts = await shiftService.ShiftsByMember(Member.Id);
-            shiftTypeIds = await stmService.MemberShiftTypes(memberId);
+            shiftTypeIds = await stmService.MemberShiftTypes(Member.Id);
             foreach(int id in shiftTypeIds)
             {
                 ShiftType shiftType = stService.GetShiftTypeById(id);
