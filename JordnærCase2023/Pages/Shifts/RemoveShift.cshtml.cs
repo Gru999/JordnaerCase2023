@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace JordnærCase2023.Pages.Shifts
 {
-    public class JoinShiftModel : PageModel
+    public class RemoveShiftModel : PageModel
     {
         [BindProperty]
         public Shift Shift { get; set; }
@@ -13,24 +13,26 @@ namespace JordnærCase2023.Pages.Shifts
         public IShiftService shiftService { get; set; }
         public IUserLoginService userService { get; set; }
         public IMemberService memberService { get; set; }
+        [BindProperty]
+        public string Url { get; set; }
 
-        public JoinShiftModel(IShiftService shiftService, IUserLoginService userService, IMemberService memberService)
+        public RemoveShiftModel(IShiftService shiftService, IUserLoginService userService, IMemberService memberService)
         {
             this.shiftService = shiftService;
             this.userService = userService;
             this.memberService = memberService;
         }
 
-        public async Task OnGet(int shiftId, int memberId)
+        public async Task OnGet(int shiftId, string url)
         {
             Shift = await shiftService.GetShiftsByIdAsync(shiftId);
-            Shift.MemberID = memberId;
+            Url = url;
 
         }
         public async Task<IActionResult> OnPost()
         {
-            await shiftService.MemberToShift(Shift.ShiftID, (int)Shift.MemberID);
-            return RedirectToPage("GetAllShifts");
+            await shiftService.MemberToShift(Shift.ShiftID, 0);
+            return Redirect(Url);
         }
     }
 }

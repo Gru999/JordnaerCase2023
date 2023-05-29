@@ -9,12 +9,13 @@ namespace JordnærCase2023.Services
     {
         private string createSql = "insert into JShift (ShiftType_ID, Date_From, Date_To) " +
                                     "Values (@ShiftType, @DateFrom, @DateTo)";
-        private string updateSql = "update JShift set ShiftType_ID = @ShiftTypeId," +
+        private string updateSql = "update JShift set Member_ID = @MemberId, ShiftType_ID = @ShiftTypeId," +
             "Date_From = @DateFrom, Date_To = @DateTo where Shift_ID = @ShiftId";
         private string deleteSql = "delete from JShift where Shift_ID = @ShiftId";
         private string getAllShiftsSql = "select * from JShift";
         private string getShiftsByIdSql = "select * from JShift where Shift_ID = @ShiftId";
         private string getShiftsByMember = "select * from JShift where Member_ID = @MemberId";
+        private string memberToShiftSql = "update JShift set Member_Id = @MemberId where Shift_ID = @ShiftId";
 
         public ShiftService(IConfiguration configuration) : base(configuration)
         {
@@ -220,5 +221,41 @@ namespace JordnærCase2023.Services
             }
             return MemberShifts;
         }
+
+        public async Task<bool> MemberToShift(int shiftId, int memberId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(memberToShiftSql, connection))
+                {
+                    command.Parameters.AddWithValue("@ShiftId", shiftId);
+                    if(memberId == 0)
+                    {
+                        command.Parameters.AddWithValue("@MemberId", Convert.DBNull);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@MemberId", memberId);
+                    }
+                    try
+                    {
+                        await command.Connection.OpenAsync();
+                        int noOfRows = await command.ExecuteNonQueryAsync();
+                        if (noOfRows == 1)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                    catch (SqlException sqlEx)
+                    {
+                        Console.WriteLine("Database Error: " + sqlEx.Message);
+                    }
+                }
+            }
+            return false;
+        }
+
+
     }
 }

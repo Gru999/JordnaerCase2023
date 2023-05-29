@@ -8,13 +8,14 @@
 
 <h1>Get All Shifts</h1>
 
+<div style="display:flex; justify-content: space-between;">
 <form method="get">
     Search <input type="text" asp-for="@Model.FilterCriteria" />
     <input type="submit" value="Filter" />
 </form> 
-<p>
-    <a asp-page="CreateShift">Create a new Shift</a>
-</p>
+
+<a asp-page="CreateShift" class="btn btn-primary">Create a new Shift</a>
+</div>
 
 <table class="table">
     <thead>
@@ -33,7 +34,13 @@
         <th>
             Date_To
         </th>
-    </thead>
+        @if(Model.LoggedMember != null)
+        {
+            <th></th>
+        }
+        <th></th>
+        <th></th>
+    </th>
     <tbody>
         @if (Model.Shifts.Count() != 0)
         {
@@ -47,8 +54,7 @@
                         @item.MemberID
                     </td>
                     <td>
-                        @item.ShiftType
-@*                        @shiftTypeService.GetShiftTypeById(item.ShiftType)*@
+                        @shiftTypeService.GetShiftTypeById(item.ShiftType).Name
                     </td>
                     <td>
                         @item.DateFrom
@@ -56,11 +62,23 @@
                     <td>
                         @item.DateTo
                     </td>
-                    <td>
-                        <a asp-page="JoinShift" asp-route-shiftId="@item.ShiftID">Join Shift</a> |
-                        <a asp-page="UpdateShift" asp-route-shiftId="@item.ShiftID">Update</a> |
-                        <a asp-page="DeleteShift" asp-route-shiftId="@item.ShiftID">Delete</a>
-                    </td>
+                    
+                        @if(Model.LoggedMember != null && item.MemberID == null)
+                        {
+                        <td>
+                            <a asp-page="JoinShift" asp-route-shiftId="@item.ShiftID" asp-route-memberId="@Model.LoggedMember.Id">Join Shift</a>
+                        </td>
+                        }
+                        
+                        @if (Model.LoggedMember != null && item.MemberID != null)
+                        {
+                        <td>
+                            <a asp-page="RemoveShift" asp-route-shiftId="@item.ShiftID" asp-route-url="/Shifts/GetAllShifts">Remove Shift</a>
+                        </td>
+                        }
+
+                    <td><a asp-page="UpdateShift" asp-route-shiftId="@item.ShiftID">Update</a></td>
+                    <td><a asp-page="DeleteShift" asp-route-shiftId="@item.ShiftID">Delete</a></td>
                 </tr>
             }
         }

@@ -10,5 +10,6 @@ namespace JordnærCase2023.Interfaces
         Task<List<Shift>> GetAllShiftsAsync();
         Task<Shift> GetShiftsByIdAsync(int id);
         Task<List<Shift>> ShiftsByMember(int id);
+        Task<bool> MemberToShift(int shiftId, int memberId);
     } 
 }

@@ -37,7 +37,7 @@
                 <td>@item.Phone</td>
                 <td>@item.Email</td>
                 <td>
-                    <a asp-page="UpdateMember" asp-route-memberId="@item.Id">Rediger</a>
+                    <a asp-page="UpdateMember" asp-route-memberId="@item.Id" asp-route-url="/Members/AllMembers">Rediger</a>
                 </td>
                 <td>
                     <a asp-page="DeleteMember" asp-route-memberId="@item.Id">Slet</a>

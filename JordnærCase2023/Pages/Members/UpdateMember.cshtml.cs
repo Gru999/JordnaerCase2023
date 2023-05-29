@@ -32,6 +32,9 @@ namespace JordnærCase2023.Pages.Members
         [BindProperty]
         public string PasswordMatch { get; set; }
 
+        [BindProperty]
+        public string LastUrl { get; set; }
+
         public UpdateMemberModel(IMemberService memberService, IWebHostEnvironment webHostEnvironment, IShiftTypeService stService, IShiftTypeMemberService stmService)
         {
             mService = memberService;
@@ -40,11 +43,12 @@ namespace JordnærCase2023.Pages.Members
             this.stmService = stmService;
         }
 
-        public async Task OnGetAsync(int memberId)
+        public async Task OnGetAsync(int memberId, string url)
         {
             MemberToUpdate = await mService.GetMemberByID(memberId);
             ShiftTypes = stService.GetAllShiftTypes();
             MemberShiftTypes = await stmService.MemberShiftTypes(memberId);
+            LastUrl = url;
 
             foreach(var item in ShiftTypes)
             {
@@ -173,7 +177,8 @@ namespace JordnærCase2023.Pages.Members
                 }
 
                 await mService.UpdateMemberAsync(MemberToUpdate);
-                return RedirectToPage("AllMembers");
+                return Redirect(LastUrl);
+
             }
         }
 
