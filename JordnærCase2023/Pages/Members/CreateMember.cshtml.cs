@@ -80,10 +80,6 @@ namespace JordnærCase2023.Pages.Members
                     UniqueEmailMessage = "Denne email er allerede registretet.";
                     result = true;
                 }
-                else
-                {
-                    result = false;
-                }
                 return result;
             }
 

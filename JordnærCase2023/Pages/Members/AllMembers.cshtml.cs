@@ -26,7 +26,11 @@ namespace JordnærCase2023.Pages.Members
                 Members = await mService.GetAllMembersAsync();
             }
 
-            Members = Members.OrderBy(x => x.Name).ToList();
+            if(Members.Count > 0 || Members != null)
+            {
+                Members = Members.OrderBy(x => x.Name).ToList();
+            }
+            
         }
     }
 }

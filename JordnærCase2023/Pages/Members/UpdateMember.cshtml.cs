@@ -109,10 +109,6 @@ namespace JordnærCase2023.Pages.Members
                     UniqueEmailMessage = "Denne email er allerede registretet.";
                     result = true;
                 }
-                else
-                {
-                    result = false;
-                }
                 return result;
             }
 
@@ -123,7 +119,7 @@ namespace JordnærCase2023.Pages.Members
             }
             else
             {
-                if (MemberToUpdate.Password == null)
+                if (MemberToUpdate.Password == null && PasswordMatch == null)
                 {
                     MemberToUpdate.Password = OldUser.Password;
                 }
