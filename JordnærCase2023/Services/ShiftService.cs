@@ -9,13 +9,13 @@ namespace JordnærCase2023.Services
     {
         private string createSql = "insert into JShift (ShiftType_ID, Date_From, Date_To) " +
                                     "Values (@ShiftType, @DateFrom, @DateTo)";
-        private string updateSql = "update JShift set Member_ID = @MemberId, ShiftType_ID = @ShiftTypeId," +
+        private string updateSql = "update JShift set ShiftType_ID = @ShiftTypeId," +
             "Date_From = @DateFrom, Date_To = @DateTo where Shift_ID = @ShiftId";
         private string deleteSql = "delete from JShift where Shift_ID = @ShiftId";
         private string getAllShiftsSql = "select * from JShift";
         private string getShiftsByIdSql = "select * from JShift where Shift_ID = @ShiftId";
         private string getShiftsByMember = "select * from JShift where Member_ID = @MemberId";
-        private string memberToShiftSql = "update JShift set Member_Id = @MemberId where Shift_ID = @ShiftId";
+        private string memberToShiftSql = "update JShift set Member_ID = @MemberId where Shift_ID = @ShiftId";
 
         public ShiftService(IConfiguration configuration) : base(configuration)
         {
