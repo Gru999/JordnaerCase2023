@@ -40,8 +40,6 @@ namespace JordnærCase2023.Pages.Events
             }
 
             //Admin assigning check
-            Email = HttpContext.Session.GetString("Email");
-            int emMemberId = _userLoginService.GetLoggedMember(Email).Id;
             EMOwner = await _eventService.GetAllEventMemberAsync();
             Events = await _eventService.GetAllEventsAsync();
             Random random = new Random();
@@ -55,7 +53,10 @@ namespace JordnærCase2023.Pages.Events
                     await _eventService.CreateEMConnectionAsync(randAdmin.Id, difId);
                     return RedirectToPage("/index");
                 }
-            }                  
+            }       
+            
+
+
             return Page();
         }
 
