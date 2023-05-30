@@ -40,7 +40,15 @@ namespace JordnærCase2023.Pages.Members
         public async void OnGet()
         {
             MemberShiftTypes = stService.GetAllShiftTypes();
+
+            foreach (var item in MemberShiftTypes)
+            {
+                item.Valid = false;
+            }
         }
+
+        
+
 
         public async Task<IActionResult> OnPostAsync()
         {
