@@ -421,8 +421,6 @@ namespace JordnærCase2023.Services
                 try
                 {
                     SqlCommand command = new SqlCommand(queryEMIdFromId, connection);
-                    //command.Parameters.AddWithValue("@MemberId", memberId);
-                    //command.Parameters.AddWithValue("@EventId", eventId);
                     await command.Connection.OpenAsync();
                     SqlDataReader reader = await command.ExecuteReaderAsync();
                     while (await reader.ReadAsync())
