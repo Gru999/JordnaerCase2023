@@ -6,6 +6,11 @@ namespace JordnærCase2023.Services
     {
         protected string connectionString;
         public IConfiguration Configuration { get; set; }
+
+        public Connection()
+        {
+            connectionString = Secret.MyConnectionString;
+        }
         public Connection(IConfiguration configuration)
         {
             Configuration = configuration;

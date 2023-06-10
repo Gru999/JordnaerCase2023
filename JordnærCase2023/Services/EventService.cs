@@ -37,6 +37,7 @@ namespace JordnærCase2023.Services
         {   
         }
 
+        public EventService() : base() { }
 
         public async Task<bool> CreateEventAsync(Event _event)
         {
@@ -59,9 +60,13 @@ namespace JordnærCase2023.Services
                         command.Parameters.AddWithValue("@EventImg", _event.EventImg);
                     }
                     command.Parameters.AddWithValue("@MaxEventMembers", _event.EventMaxAttendance);
-                    await command.Connection.OpenAsync();
+
+                    command.Connection.Open();
                     int resultCreate = await command.ExecuteNonQueryAsync();
-                    return resultCreate == 1;
+                    if (resultCreate == 1) {
+                        return true;
+                    }
+                    return false;
                 }
                 catch (SqlException sqlEx)
                 {
@@ -79,24 +84,33 @@ namespace JordnærCase2023.Services
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                try
+                using (SqlCommand command = new SqlCommand(queryDeleteEvent, connection))
                 {
-                    SqlCommand command = new SqlCommand(queryDeleteEvent, connection);
+                    Event e = await GetEventFromIdAsync(eventId);
                     command.Parameters.AddWithValue("@EventId", eventId);
-                    await command.Connection.OpenAsync();
-                    SqlDataReader reader = await command.ExecuteReaderAsync();
-                    if (await reader.ReadAsync())
+                    try
                     {
-                        return await GetEventFromIdAsync(eventId);
+                        await command.Connection.OpenAsync();
+
+                        int noOfRows = await command.ExecuteNonQueryAsync();
+                        if (noOfRows == 1)
+                        {
+                            return e;
+                        }
+                        //SqlDataReader reader = await command.ExecuteReaderAsync();
+                        //if (await reader.ReadAsync())
+                        //{
+                        //    return e;
+                        //}
                     }
-                }
-                catch (SqlException sqlEx)
-                {
-                    Console.WriteLine("Database error " + sqlEx.Message);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Generel fejl " + ex.Message);
+                    catch (SqlException sqlEx)
+                    {
+                        Console.WriteLine("Database error " + sqlEx.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Generel fejl " + ex.Message);
+                    }
                 }
             }
             return null;
