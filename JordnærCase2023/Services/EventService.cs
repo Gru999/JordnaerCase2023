@@ -96,12 +96,7 @@ namespace JordnærCase2023.Services
                         if (noOfRows == 1)
                         {
                             return e;
-                        }
-                        //SqlDataReader reader = await command.ExecuteReaderAsync();
-                        //if (await reader.ReadAsync())
-                        //{
-                        //    return e;
-                        //}
+                        }                        
                     }
                     catch (SqlException sqlEx)
                     {
