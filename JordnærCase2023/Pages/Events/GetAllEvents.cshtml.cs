@@ -51,12 +51,9 @@ namespace JordnærCase2023.Pages.Events
                 if (!idMatch)
                 {
                     await _eventService.CreateEMConnectionAsync(randAdmin.Id, difId);
-                    return RedirectToPage("/index");
+                    return RedirectToPage("/Events/GetAllEvents");
                 }
             }       
-            
-
-
             return Page();
         }
 
