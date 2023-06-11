@@ -3,7 +3,7 @@
 @inject IShiftTypeService shiftTypeService
 @model JordnærCase2023.Pages.Members.MemberPageModel
 @{
-    ViewData["Title"] = "";
+    ViewData["Title"] = "Min side";
 }
 
 <div>
@@ -67,9 +67,16 @@
         <div style="margin-left:auto;">
             <div style="padding-bottom:5px;">
                 <button type="button" class="btn btn-outline-dark" onclick="window.history.back();">Tilbage</button>
-                <a asp-page="UpdateMember" class="btn btn-primary" asp-route-memberId="@Model.Member.Id" asp-route-url="/Members/MemberPage?memberId=@Model.Member.Id">Opdater medlem</a>
+                @if (Model.Member.Email == Model.LoggedEmail || Model.LoggedMember.Admin == true)
+                {
+                    <a asp-page="UpdateMember" class="btn btn-primary" asp-route-memberId="@Model.Member.Id" asp-route-url="/Members/MemberPage?memberId=@Model.Member.Id">Rediger medlem</a>
+                }
+               
             </div>
-            <a asp-page="DeleteMember" class="btn btn-primary btn-danger" style="float:right;" asp-route-memberId="@Model.Member.Id">Slet medlem</a>
+            @if (Model.Member.Email == Model.LoggedEmail || Model.LoggedMember.Admin == true)
+            {
+                <a asp-page="DeleteMember" class="btn btn-primary btn-danger" style="float:right;" asp-route-memberId="@Model.Member.Id">Slet medlem</a>
+            }
         </div>
     </div>
 
@@ -83,19 +90,16 @@
         {
             <thead>
             <th>
-                Shift_ID
+                ID
             </th>
             <th>
-                Member_ID
+                Vagttype
             </th>
             <th>
-                Shift_Type
+                Startdato
             </th>
             <th>
-                Date_From
-            </th>
-            <th>
-                Date_To
+                Slutdato
             </th>
             <th></th>
             </thead>
@@ -107,9 +111,6 @@
                         @item.ShiftID
                     </td>
                     <td>
-                        @item.MemberID
-                    </td>
-                    <td>
                         @shiftTypeService.GetShiftTypeById(item.ShiftType).Name
                     </td>
                     <td>
@@ -118,9 +119,13 @@
                     <td>
                         @item.DateTo
                     </td>
-                    <td>
-                        <a asp-page="/Shifts/RemoveShift" asp-route-shiftId="@item.ShiftID" asp-route-url="/Members/MemberPage?memberId=@item.MemberID">Remove Shift</a>
-                    </td>
+                    @if (Model.Member.Email == Model.LoggedEmail || Model.LoggedMember.Admin == true)
+                    {
+                        <td>
+                            <a asp-page="/Shifts/RemoveShift" asp-route-shiftId="@item.ShiftID" asp-route-url="/Members/MemberPage?memberId=@item.MemberID">Afmeld vagt</a>
+                        </td>
+                    }
+                    
                 </tr>
             }
         }
@@ -138,23 +143,21 @@
             <thead>
                 <tr>
                     <th>
-                        Event Id
+                        ID
                     </th>
                     <th>
-                        Name
+                        Navn
                     </th>
                     <th>
-                        Description
+                        Beskrivelse
                     </th>
                     <th>
-                        DateFrom
+                        Startdato
                     </th>
                     <th>
-                        DateTo
+                        Slutdato
                     </th>
-                    <th>
-                        EventImg
-                    </th>
+                    <th></th>
                     <th></th>
                 </tr>
             </thead>
@@ -168,7 +171,12 @@
                         <td>@item.EventDescription</td>
                         <td>@item.EventDateFrom</td>
                         <td>@item.EventDateTo</td>
-                        <td><a asp-page-handler="LeaveEvent" asp-route-eventId="@item.EventId" class="btn btn-primary" style="font-size: medium">Leave Event</a></td>
+                        <td><img src="~/images/@item.EventImg" width="60" height="60" /></td>
+                        @if (Model.Member.Email == Model.LoggedEmail || Model.LoggedMember.Admin == true)
+                        {
+                            <td><a asp-page-handler="LeaveEvent" asp-route-eventId="@item.EventId" asp-route-memberId="@Model.Member.Id" asp-route-url="/Members/MemberPage?memberId=@Model.Member.Id" class="btn btn-primary" style="font-size: medium">Afmeld</a></td>
+                        }
+                        
                     </tr>
                 }
                 

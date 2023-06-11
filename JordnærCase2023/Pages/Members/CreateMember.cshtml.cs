@@ -23,22 +23,35 @@ namespace JordnærCase2023.Pages.Members
         [BindProperty]
         public List<ShiftType> MemberShiftTypes { get; set; }
 
+        public Member? LoggedMember { get; set; }
+
         public IMemberService mService;
         private IShiftTypeService stService;
         private IShiftTypeMemberService stmService;
         private IWebHostEnvironment webHostEnvironment;
+        private IUserLoginService logService;
+        private IHttpContextAccessor httpContext;
 
 
-        public CreateMemberModel(IMemberService mService, IShiftTypeService stService, IShiftTypeMemberService stmService, IWebHostEnvironment webHostEnvironment)
+        public CreateMemberModel(IMemberService mService, IShiftTypeService stService, IShiftTypeMemberService stmService, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContext, IUserLoginService logService)
         {
             this.mService = mService;
             this.stService = stService;
             this.stmService = stmService;
             this.webHostEnvironment = webHostEnvironment;
+            this.httpContext = httpContext;
+            this.logService = logService;
         }
 
         public async void OnGet()
         {
+
+            string email = HttpContext.Session.GetString("Email");
+            if (!string.IsNullOrEmpty(email))
+            {
+                LoggedMember = logService.GetLoggedMember(email);
+            }
+
             MemberShiftTypes = stService.GetAllShiftTypes();
 
             foreach (var item in MemberShiftTypes)
@@ -52,6 +65,7 @@ namespace JordnærCase2023.Pages.Members
 
         public async Task<IActionResult> OnPostAsync()
         {
+
             List<Member> AllMembers = await mService.GetAllMembersAsync();
 
             bool UniqueEmail()
@@ -122,7 +136,16 @@ namespace JordnærCase2023.Pages.Members
                     }
                 }
 
-                return RedirectToPage("AllMembers");
+                string email = HttpContext.Session.GetString("Email");
+                if (String.IsNullOrEmpty(email))
+                {
+                    HttpContext.Session.SetString("Email", newMember.Email);
+                    return RedirectToPage("/Index");
+                }
+                else
+                {
+                    return RedirectToPage("AllMembers");
+                }
 
             }
 

@@ -2,10 +2,10 @@
 @using JordnærCase2023.Models
 @model JordnærCase2023.Pages.Shifts.CreateModel
 @{
-    ViewData["Title"] = "Create Shift";
+    ViewData["Title"] = "Opret ny vagt";
 }
 
-<h1>Create Shift</h1>
+<h1>Opret vagt</h1>
 
 <div class="row">
     <div class="col-md-4">
@@ -15,9 +15,9 @@
                 <input asp-for="@Model.ShiftCreate.MemberID" class="form-control" hidden/>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.ShiftCreate.ShiftType" class="control-label"></label>
+                <label asp-for="@Model.ShiftCreate.ShiftType" class="control-label">Vagttype</label>
                 <select asp-for="@Model.SelectedShiftType"  class="form-control">
-                    <option value="">Select Shift Type her</option>
+                    <option value="">Vælg vagttype:</option>
                     @foreach (var sType in Model.ShiftTypes)
                     {
                         <option value="@sType.Id">@sType.Name</option>
@@ -25,17 +25,17 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.ShiftCreate.DateFrom" class="control-label"></label>
+                <label asp-for="@Model.ShiftCreate.DateFrom" class="control-label">Startdato</label>
                 <input asp-for="@Model.ShiftCreate.DateFrom" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="@Model.ShiftCreate.DateTo" class="control-label"></label>
+                <label asp-for="@Model.ShiftCreate.DateTo" class="control-label">Slutdato</label>
                 <input asp-for="@Model.ShiftCreate.DateTo" class="form-control" />
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <button type="button" class="btn btn-primary" onclick="window.history.back();">Back</button>
+            <div class="form-group" style="margin-top:5px;">
+                <button type="button" class="btn btn-outline-dark" onclick="window.history.back();">Tilbage</button>
+                <input type="submit" value="Opret" class="btn btn-primary" />
             </div>
         </form>
     </div>

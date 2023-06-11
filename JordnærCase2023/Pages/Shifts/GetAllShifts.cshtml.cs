@@ -10,8 +10,6 @@ namespace JordnærCase2023.Pages.Shifts
 {
     public class GetAllShiftsModel : PageModel
     {
-        [BindProperty(SupportsGet = true)]
-        public string FilterCriteria { get; set; }
         public List<Shift> Shifts { get; set; }
         public IShiftService _shiftService { get; set; }
         public IShiftTypeService _shiftTypeService { get; set; }
@@ -26,11 +24,26 @@ namespace JordnærCase2023.Pages.Shifts
             this.httpContext = httpContext;
         }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            string Email = httpContext.HttpContext.Session.GetString("Email");
+            string? Email = httpContext.HttpContext.Session.GetString("Email");
+
+            if (String.IsNullOrEmpty(Email))
+            {
+                return RedirectToPage("/Login");
+            }
+
             LoggedMember = _userService.GetLoggedMember(Email);
+
             Shifts = await _shiftService.GetAllShiftsAsync();
+
+            if (String.IsNullOrEmpty(Email))
+            {
+                return RedirectToPage("/Login");
+            }
+
+            return Page();
+
 
         }
     }

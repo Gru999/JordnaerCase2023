@@ -1,11 +1,11 @@
 ﻿@page
 @model JordnærCase2023.Pages.Events.CreateEventModel
 @{
-    ViewData["Title"] = "Create Event";
+    ViewData["Title"] = "Opret event";
 }
 
 
-<h1>Create Event</h1>
+<h1>Opret event</h1>
 
 <div class="row">
     <div class="col-md-4">
@@ -15,33 +15,34 @@
                 <input asp-for="@Model.Event.EventId" class="form-control" hidden/>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventName" class="control-label"></label>
+                <label asp-for="@Model.Event.EventName" class="control-label">Navn</label>
                 <input asp-for="@Model.Event.EventName" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventDescription" class="control-label"></label>
+                <label asp-for="@Model.Event.EventDescription" class="control-label">Beskrivelse</label>
                 <input asp-for="@Model.Event.EventDescription" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventDateFrom" class="control-label"></label>
+                <label asp-for="@Model.Event.EventDateFrom" class="control-label">Startdato</label>
                 <input asp-for="@Model.Event.EventDateFrom" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventDateTo" class="control-label"></label>
+                <label asp-for="@Model.Event.EventDateTo" class="control-label">Slutdato</label>
                 <input asp-for="@Model.Event.EventDateTo" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Photo" class="control-label"></label>
+                <label asp-for="@Model.Photo" class="control-label">Billede</label>
                 <div class="custom-file">
                     <input asp-for="@Model.Photo" class="custom-file-input form-control" />
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventMaxAttendance" class="control-label"></label>
+                <label asp-for="@Model.Event.EventMaxAttendance" class="control-label">Max antal deltagere</label>
                 <input asp-for="@Model.Event.EventMaxAttendance" class="form-control" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group" style="margin-top:5px;">
+                <button type="button" class="btn btn-outline-dark" onclick="window.history.back();">Tilbage</button>
+                <input type="submit" value="Opret event" class="btn btn-primary" />
             </div>
         </form>
     </div>

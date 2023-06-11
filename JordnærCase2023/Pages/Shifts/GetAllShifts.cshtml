@@ -3,36 +3,32 @@
 @inject IShiftTypeService shiftTypeService
 @model JordnærCase2023.Pages.Shifts.GetAllShiftsModel
 @{
-    ViewData["Title"] = "Get All Shifts";
+    ViewData["Title"] = "Alle vagter";
 }
 
-<h1>Get All Shifts</h1>
+<h1>Alle vagter</h1>
 
 <div style="display:flex; justify-content: space-between;">
-<form method="get">
-    Search <input type="text" asp-for="@Model.FilterCriteria" />
-    <input type="submit" value="Filter" />
-</form> 
 
-<a asp-page="CreateShift" class="btn btn-primary">Create a new Shift</a>
+<a asp-page="CreateShift" class="btn btn-primary" style="float:right;">Opret ny vagt</a>
 </div>
 
 <table class="table">
     <thead>
         <th>
-            Shift_ID
+            ID
         </th>
         <th>
-            Member_ID
+            Medlem ID
         </th>
         <th>
-            Shift_Type
+            Vagttype
         </th>
         <th>
-            Date_From
+            Startdato
         </th>
         <th>
-            Date_To
+            Slutdato
         </th>
         @if(Model.LoggedMember != null)
         {
@@ -63,22 +59,24 @@
                         @item.DateTo
                     </td>
                     
-                        @if(Model.LoggedMember != null && item.MemberID == null)
+                        @if(item.MemberID == null)
                         {
                         <td>
-                            <a asp-page="JoinShift" asp-route-shiftId="@item.ShiftID" asp-route-memberId="@Model.LoggedMember.Id">Join Shift</a>
+                            <a asp-page="JoinShift" asp-route-shiftId="@item.ShiftID" asp-route-memberId="@Model.LoggedMember.Id" class="btn btn-primary">Tilmeld</a>
                         </td>
                         }
-                        
-                        @if (Model.LoggedMember != null && item.MemberID != null)
+                        else if (item.MemberID == Model.LoggedMember.Id || Model.LoggedMember.Admin == true)
                         {
                         <td>
-                            <a asp-page="RemoveShift" asp-route-shiftId="@item.ShiftID" asp-route-url="/Shifts/GetAllShifts">Remove Shift</a>
+                            <a asp-page="RemoveShift" asp-route-shiftId="@item.ShiftID" asp-route-url="/Shifts/GetAllShifts" class="btn btn-danger">Afmeld</a>
                         </td>
+                        }
+                        else{
+                            <td></td>
                         }
 
-                    <td><a asp-page="UpdateShift" asp-route-shiftId="@item.ShiftID">Update</a></td>
-                    <td><a asp-page="DeleteShift" asp-route-shiftId="@item.ShiftID">Delete</a></td>
+                    <td><a asp-page="UpdateShift" asp-route-shiftId="@item.ShiftID" class="btn btn-outline-primary">Rediger</a></td>
+                    <td><a asp-page="DeleteShift" asp-route-shiftId="@item.ShiftID" class="btn btn-outline-danger">Slet</a></td>
                 </tr>
             }
         }

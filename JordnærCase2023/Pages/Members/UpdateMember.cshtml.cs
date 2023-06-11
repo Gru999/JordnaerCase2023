@@ -14,6 +14,7 @@ namespace JordnærCase2023.Pages.Members
         private IShiftTypeService stService;
         private IShiftTypeMemberService stmService;
         private IWebHostEnvironment webHostEnvironment;
+        private IUserLoginService logService;
 
         [BindProperty]
         public Member MemberToUpdate { get; set; }
@@ -22,6 +23,8 @@ namespace JordnærCase2023.Pages.Members
         public IFormFile Photo { get; set; }
 
         public Member OldUser { get; set; }
+
+        public Member LoggedMember { get; set; }
 
         [BindProperty]
         public List<ShiftType> ShiftTypes { get; set; }
@@ -35,16 +38,23 @@ namespace JordnærCase2023.Pages.Members
         [BindProperty]
         public string LastUrl { get; set; }
 
-        public UpdateMemberModel(IMemberService memberService, IWebHostEnvironment webHostEnvironment, IShiftTypeService stService, IShiftTypeMemberService stmService)
+        public UpdateMemberModel(IMemberService memberService, IWebHostEnvironment webHostEnvironment, IShiftTypeService stService, IShiftTypeMemberService stmService, IUserLoginService logService)
         {
             mService = memberService;
             this.webHostEnvironment = webHostEnvironment;
             this.stService = stService;
             this.stmService = stmService;
+            this.logService = logService;
         }
 
         public async Task OnGetAsync(int memberId, string url)
         {
+            string email = HttpContext.Session.GetString("Email");
+            if (!string.IsNullOrEmpty(email))
+            {
+                LoggedMember = logService.GetLoggedMember(email);
+            }
+
             MemberToUpdate = await mService.GetMemberByID(memberId);
             ShiftTypes = stService.GetAllShiftTypes();
             MemberShiftTypes = await stmService.MemberShiftTypes(memberId);
@@ -133,7 +143,7 @@ namespace JordnærCase2023.Pages.Members
                 }
                 if (Photo != null)
                 {
-                    if (MemberToUpdate.Image != null && MemberToUpdate.Image != "basic_pfp.png" && OldUser.Image != null)
+                    if (MemberToUpdate.Image != null && MemberToUpdate.Image != "basic_pfp.png" && OldUser.Image != null && MemberToUpdate.Image != OldUser.Image)
                     {
                         string filePath = Path.Combine(webHostEnvironment.WebRootPath, "/Images/Members", MemberToUpdate.Image);
                         System.IO.File.Delete(filePath);

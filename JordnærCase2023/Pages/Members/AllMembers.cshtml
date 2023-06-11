@@ -7,9 +7,9 @@
 <h1>Medlemmer</h1>
 
 <div style="display:flex; justify-content:space-between">
-<form method="get">
-    <input type="text" asp-for="@Model.FilterCriteria" placeholder="Søg efter navn..."/>
-    <input type="submit" value="Filter"/>
+<form method="get" style="display:flex; gap:5px;">
+    <input type="text" asp-for="@Model.FilterCriteria" placeholder="Søg efter navn..." class="form-control"/>
+    <input type="submit" value="Filter" class="btn btn-outline-primary"/>
 </form>
 
 <a asp-page="CreateMember" class="btn btn-primary">Opret nyt medlem</a>
@@ -23,7 +23,6 @@
         <th>Tlf.</th>
         <th>E-mail</th>
         <th></th>
-        <th></th>
     </tr>
     @if(Model.Members.Count > 0){
         @foreach (var item in Model.Members)
@@ -36,12 +35,17 @@
                 </td>
                 <td>@item.Phone</td>
                 <td>@item.Email</td>
-                <td>
-                    <a asp-page="UpdateMember" asp-route-memberId="@item.Id" asp-route-url="/Members/AllMembers">Rediger</a>
-                </td>
-                <td>
-                    <a asp-page="DeleteMember" asp-route-memberId="@item.Id">Slet</a>
-                </td>
+               @if(Model.LoggedMember.Admin == true || Model.LoggedMember.Id == item.Id)
+               {
+                    <td>
+                        <a asp-page="UpdateMember" asp-route-memberId="@item.Id" asp-route-url="/Members/AllMembers" class="btn btn-outline-primary">Rediger</a>
+                        <a asp-page="DeleteMember" asp-route-memberId="@item.Id" class="btn btn-outline-danger">Slet</a>
+                    </td>
+               }
+               else
+               {
+                  <td></td>  
+               }
             </tr>
         }
     }

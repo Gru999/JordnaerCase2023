@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - JordnærCase2023</title>
+    <title>@ViewData["Title"] - Jordnær</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/JordnærCase2023.styles.css" asp-append-version="true" />
@@ -16,21 +16,21 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">JordnærCase2023</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index"><img src="~/Images/logo.png" height="40"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" style="padding-left: 10px;">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Forside</a>
                         </li>
                         <li>
-                            <a class="nav-link text-dark" asp-page="/Members/AllMembers">Members</a>
+                            <a class="nav-link text-dark" asp-page="/Members/AllMembers">Medlemmer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Shifts/GetAllShifts">Shifts</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Shifts/GetAllShifts">Vagter</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Events/GetAllEvents">Events</a>
@@ -38,19 +38,16 @@
                         @{
                             string email = httpContext.HttpContext.Session.GetString("Email");
                             if (email != null) {
-                                        <li class="nav-item" style="margin-left:auto; margin-right:5px;">
-                                            <a class="btn-outline-dark btn" asp-page="/Members/MemberPage" asp-route-memberEmail="@email">Min side</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="btn btn-outline-dark" asp-page="/Login" asp-page-handler="Logout">Logout </a>
-                                        </li>
-                                        //<li class="nav-item" class="float-right" style="font-size: medium">
-                                        //    @email
-                                        //</li>
+                                            <li class="nav-item" style="margin-left:auto; margin-right:5px;">
+                                                <a class="btn-outline-dark btn" asp-page="/Members/MemberPage">Min side</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="btn btn-outline-dark" asp-page="/Login" asp-page-handler="Logout">Log ud</a>
+                                            </li>
                             } else {
-                                        <li class="nav-item" style=" margin-left: auto;">
-                                            <a asp-page="/Login" class="float-right btn btn-primary" style="font-size: medium">Log In</a>
-                                        </li>
+                                            <li class="nav-item" style=" margin-left: auto;">
+                                                <a asp-page="/Login" class="float-right btn btn-primary" style="font-size: medium">Log ind</a>
+                                            </li>
                             }
                         }
                     </ul>
@@ -66,7 +63,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - JordnærCase2023 - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2023 - Jordnær - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 
