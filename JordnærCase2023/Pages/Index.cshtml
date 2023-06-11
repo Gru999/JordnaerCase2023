@@ -12,8 +12,9 @@
 <div class="text-center">
     @if(Model.Email == null)
     {
-        <h1>Velkommen</h1>
-        <a asp-page="Login" class="btn btn-primary">Login</a>
+        <h1>Velkommen til Jordnær</h1>
+        <a asp-page="Login" class="btn btn-primary">Log ind</a>
+        <a asp-page="/Members/CreateMember" class="btn btn-outline-primary">Opret bruger</a>
     }
     else
     {

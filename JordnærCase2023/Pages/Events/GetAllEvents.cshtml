@@ -6,44 +6,41 @@
 @inject IUserLoginService _userLoginService
 @inject IEventService _eventService
 @{
-    ViewData["Titel"] = "GetAllEvents";
+    ViewData["Titel"] = "Events";
 }
 
 <h1>Current Events</h1>
 
-<form method="get">
-    Search <input type="text" asp-for="FilterCriteria" />
-    <input type="submit" value="Filter" />
-</form>
-<p></p>
+<div style="display:flex; justify-content:space-between">
+    <form method="get" style="display:flex; gap:5px;">
+        <input type="text" asp-for="@Model.FilterCriteria" placeholder="Søg efter navn..." class="form-control" />
+        <input type="submit" value="Filter" class="btn btn-outline-primary" />
+    </form>
 
-<p>
-    <a asp-page="CreateEvent" class="btn btn-primary" style="font-size: medium">Create Event</a>
-</p>
+    <a asp-page="CreateEvent" class="btn btn-primary">Opret nyt event</a>
+</div>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                Event Id
+                ID
             </th>
             <th>
-                Name
+                Navn
             </th>
             <th>
-                Description
+                Beskrivelse
             </th>
             <th>
-                DateFrom
+                Startdato
             </th>
             <th>
-                DateTo
+                Slutdato
             </th>
+            <th></th>
             <th>
-                EventImg
-            </th>
-            <th>
-                MaxAtt.
+                Ledige pladser
             </th>
         </tr>
     </thead>
@@ -77,10 +74,10 @@
                             int attCount = ownerSum.Count(x => x.Item3 == item.EventId);
                             if (attCount >= item.EventMaxAttendance)
                             {
-                                <span class="text-danger">Event Full</span>
+                                <span class="text-danger">Ingen ledige pladser</span>
                             } else
                             {
-                                <span>Open Spots @(item.EventMaxAttendance - attCount)</span>                                    
+                                <span>Ledige pladser @(item.EventMaxAttendance - attCount)</span>                                    
                             }
                         }
                     </td>
@@ -91,17 +88,17 @@
                             List<Event> checkSum = await _eventService.GetEventsForMemberAsync(emMember.Id);                            
                             if (checkSum.Exists(x => x.EventId == item.EventId))
                             {
-                                <a asp-page-handler="LeaveEvent" asp-route-eventId="@item.EventId" class="btn btn-primary" style="font-size: medium">Leave Event</a>
+                                <a asp-page-handler="LeaveEvent" asp-route-eventId="@item.EventId" class="btn btn-primary" style="font-size: medium">Afmeld event</a>
                             }
                             else
                             {
-                                <a asp-page-handler="JoinEvent" asp-route-eventId="@item.EventId" class="btn btn-primary" style="font-size: medium">Join Event</a>
+                                <a asp-page-handler="JoinEvent" asp-route-eventId="@item.EventId" class="btn btn-primary" style="font-size: medium">Tilmeld event</a>
                             }                           
                             var ownerCheck = ownerSum.OrderBy(x => x.Item3).GroupBy(x => x.Item3).ToDictionary(g => g.Key, g => g.First().Item2);
                             if (ownerCheck.TryGetValue(item.EventId, out var firstId) && (firstId == emMember.Id) || emMember.Admin)
                             {
-                                    <a asp-page="UpdateEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Update</a>
-                                    <a asp-page="DeleteEvent" asp-route-id="@item.EventId" class="btn btn-primary" style="font-size: medium">Delete</a>
+                                    <a asp-page="UpdateEvent" asp-route-id="@item.EventId" class="btn btn-outline-primary" style="font-size: medium">Rediger</a>
+                                    <a asp-page="DeleteEvent" asp-route-id="@item.EventId" class="btn btn-outline-danger" style="font-size: medium">Slet</a>
                             }
                         }
                     </td>

@@ -1,10 +1,10 @@
 ﻿@page
 @model JordnærCase2023.Pages.Events.DeleteEventModel
 @{
-    ViewData["Title"] = "Delte Event";
+    ViewData["Title"] = "Slet event";
 }
 
-<h1>Delete Event</h1>
+<h1>Slet event</h1>
 
 <div class="row">
     <div class="col-md-4">
@@ -16,38 +16,38 @@
                 <input asp-for="@Model.Event.EventId" class="form-control" readonly />
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventName" class="control-label"></label>
+                <label asp-for="@Model.Event.EventName" class="control-label">Navn</label>
                 <input asp-for="@Model.Event.EventName" class="form-control" readonly/>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventDescription" class="control-label"></label>
+                <label asp-for="@Model.Event.EventDescription" class="control-label">Beskrivelse</label>
                 <input asp-for="@Model.Event.EventDescription" class="form-control" readonly/>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventDateFrom" class="control-label"></label>
+                <label asp-for="@Model.Event.EventDateFrom" class="control-label">Startdato</label>
                 <input asp-for="@Model.Event.EventDateFrom" class="form-control" readonly/>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventDateTo" class="control-label"></label>
+                <label asp-for="@Model.Event.EventDateTo" class="control-label">Slutdato</label>
                 <input asp-for="@Model.Event.EventDateTo" class="form-control" readonly/>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventImg" class="control-label"></label>
+                <label asp-for="@Model.Event.EventImg" class="control-label">Billede</label>
                 <input asp-for="@Model.Event.EventImg" class="form-control" readonly/>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Event.EventMaxAttendance" class="control-label"></label>
+                <label asp-for="@Model.Event.EventMaxAttendance" class="control-label">Max antal deltagere</label>
                 <input asp-for="@Model.Event.EventMaxAttendance" class="form-control" readonly/>
             </div>
 
             <div class="formgroup">
-                <input type="submit" value="Delete" class="btn btn-primary" />
+                <button type="button" class="btn btn-outline-dark" onclick="window.history.back();">Tilbage</button>
+                <input type="submit" value="Slet" class="btn btn-danger" />
             </div>
             <p></p>
         </form>
     </div>
     <div>
-        <a asp-page="GetAllEvents">Cancel</a>
     </div>
 </div>
 

@@ -11,12 +11,35 @@ namespace JordnærCase2023.Pages.Members
         private IMemberService mService;
         [BindProperty(SupportsGet = true)]
         public string FilterCriteria { get; set; }
-        public AllMembersModel(IMemberService memberService)
+        public IUserLoginService logService;
+        private IHttpContextAccessor httpContext;
+        public Member? LoggedMember { get; set; }
+        public string? LoggedEmail { get; set; }
+        public AllMembersModel(IMemberService memberService, IUserLoginService logService, IHttpContextAccessor httpContext)
         {
             mService = memberService;
+            this.logService = logService;
+            this.httpContext = httpContext;
         }
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            LoggedEmail = HttpContext.Session.GetString("Email");
+
+            if (String.IsNullOrEmpty(LoggedEmail))
+            {
+                return RedirectToPage("/Login");
+            }
+
+            if (LoggedEmail != null)
+            {
+                LoggedMember = logService.GetLoggedMember(LoggedEmail);
+            }
+            else
+            {
+                LoggedMember = null;
+            }
+            
+
             if(FilterCriteria != null)
             {
                 Members = await mService.GetMembersByName(FilterCriteria);
@@ -30,6 +53,8 @@ namespace JordnærCase2023.Pages.Members
             {
                 Members = Members.OrderBy(x => x.Name).ToList();
             }
+
+            return Page();
             
         }
     }

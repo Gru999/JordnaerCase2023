@@ -32,13 +32,6 @@ namespace JordnærCase2023.Pages.Events
                 return RedirectToPage("/Login");
             }
 
-            //Filter
-            if (!String.IsNullOrEmpty(FilterCriteria)) {
-                Events = await _eventService.GetEventsByNameAsync(FilterCriteria);
-            } else {
-                Events = await _eventService.GetAllEventsAsync();
-            }
-
             //Admin assigning check
             EMOwner = await _eventService.GetAllEventMemberAsync();
             Events = await _eventService.GetAllEventsAsync();
@@ -53,7 +46,20 @@ namespace JordnærCase2023.Pages.Events
                     await _eventService.CreateEMConnectionAsync(randAdmin.Id, difId);
                     return RedirectToPage("/Events/GetAllEvents");
                 }
-            }       
+            }
+
+            //Filter
+            if (!String.IsNullOrEmpty(FilterCriteria))
+            {
+                Events = await _eventService.GetEventsByNameAsync(FilterCriteria);
+            }
+            else
+            {
+                Events = await _eventService.GetAllEventsAsync();
+            }
+
+
+
             return Page();
         }
 

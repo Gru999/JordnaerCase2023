@@ -29,14 +29,6 @@ namespace JordnærCase2023.Pages.Shifts
         public async Task<IActionResult> OnPostAsync(string Shift_Type)
         {
             ShiftCreate.ShiftType = SelectedShiftType;
-            //if (Shift_Type == "BagerVagt")
-            //    ShiftCreate.ShiftType = 1;
-            //if (Shift_Type == "CafeVagt")
-            //    ShiftCreate.ShiftType = 2;
-            //if (Shift_Type == "BagerVagtFøl")
-            //    ShiftCreate.ShiftType = 3;
-            //if (Shift_Type == "CafeVagtFøl")
-            //    ShiftCreate.ShiftType = 4;
             await _shiftService.CreateShiftAsync(ShiftCreate);
             return RedirectToPage("GetAllShifts");
         }

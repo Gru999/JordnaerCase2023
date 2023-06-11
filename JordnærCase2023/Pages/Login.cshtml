@@ -3,23 +3,21 @@
 @{
     ViewData["Title"] = "Login";
 }
-<h1>Please Login</h1>
+<h1>Log ind</h1>
 
 @Model.Message
-<form method="post">
-    <table>
-        <tr>
-            <td>Email</td>
-            <td><Input type="text" asp-for="@Model.Email" /></td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td><Input type="password" asp-for="@Model.Password" /></td>
-        </tr>
-        <tr>
-            <td>&nbsp</td>
-            <td><Input type="submit" value="Login" /></td>
-        </tr>
-        <a asp-page="/Members/CreateMember">Create a new user</a>
-    </table>
+<form method="post" class="col-md-4">
+    <div class="form-group">
+        <label asp-for="@Model.Email" class="control-label">E-mail</label>
+        <Input type="text" asp-for="@Model.Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Password" class="control-label">Kodeord</label>
+        <Input type="password" asp-for="@Model.Password" class="form-control"/>
+    </div>
+    <div class="form-group" style="margin-top:10px;">
+        <a asp-page="/Members/CreateMember" class="btn btn-outline-primary">Opret bruger</a>
+        <Input type="submit" value="Log ind" class="btn btn-primary" />
+    </div>
+            
 </form>
